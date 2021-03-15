@@ -1,8 +1,6 @@
 # DIMAR
 Data-driven selction of an imputation algorithm in R.
 
-Janine Egert, Bettina Warscheid, and Clemens Kreutz. *DIMA: Data-driven selection of a suitable imputation algorithm.* bioRxiv, 2020. doi: 10.1101/2020.10.13.323618.
-
 # Installation
 
 DIMA performs and evaluates various imputation algorithms. Therefore, the respective R packages sould be properly installed:
