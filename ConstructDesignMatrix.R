@@ -1,4 +1,4 @@
-GetDesign <- function(mtx) {
+ConstructDesignMatrix <- function(mtx) {
 
 X <- matrix(0L,nrow=dim(mtx)[1]*dim(mtx)[2],ncol=dim(mtx)[1]+dim(mtx)[2]+1)
 X[,1] <- scale(rep(rowMeans(mtx,na.rm=TRUE),dim(mtx)[2]))
@@ -18,5 +18,7 @@ for (i in 1:dim(mtx)[2]) {
 }
 y <- as.numeric(is.na(mtx))
 #return(list(y,X,Xtype))
-return(list(X,Xtype))
+design <- list(y,X,Xtype)
+names(design) <- c('y','X','Xtype')
+return(design)
 }
