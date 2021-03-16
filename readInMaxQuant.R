@@ -8,7 +8,7 @@ maxQuantToMatrix <- function(filename){
     dat <- read.csv(filename, allowEscapes = TRUE, check.names = FALSE,sep = "\t")
     
     # Select all columns with LFQ intensities
-    mtx <- as.matrix(dat[, grepl("^LFQ", names(dat))])
+    mtx <- as.matrix(dat[, grepl("^Int", names(dat))])
     mtx[mtx == 0] <- NA
     mtx[mtx == "NaN"] <- NA
     # convert character matrix to numeric matrix, strings that are possibly 
@@ -60,19 +60,19 @@ maxQuantToMatrix <- function(filename){
     row.names(mtx) <- dat[, "Protein IDs"]
     
     # # remove empty rows
-    # mtx <- as.matrix(mtx[!allColNA, ])
+    mtx <- as.matrix(mtx[!allColNA, ])
     
     # log2 transform intensities
     mtx <- log2(mtx)
     
-    featureAnnotations <- as.list(featureAnnotations)
-    featureAnnotations[["ixs"]]<-ixs
+  #  featureAnnotations <- as.list(featureAnnotations)
+  #  featureAnnotations[["ixs"]]<-ixs
     
-    sexp <- SummarizedExperiment(assays=list(data=mtx),
-                                 rowData=featureAnnotations,
-                                 metadata=list(pxdid = filename))
+  #  sexp <- SummarizedExperiment(assays=list(data=mtx),
+  #                               rowData=featureAnnotations,
+  #                               metadata=list(pxdid = filename))
     # remove empty rows
-    sexp <- sexp[!allColNA, ]
+  #  sexp <- sexp[!allColNA, ]
     # write.csv(mtx[!allColNA, ], file=paste0(filename, ".csv"))
-    return(sexp)
+    return(mtx)
 }
