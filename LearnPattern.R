@@ -1,3 +1,6 @@
+source("ConstructDesignMatrix.R")
+source("ConstructRegularizationMatrix.R")
+
 LearnPattern <- function(mtx) {
   
 # Subsample indices
@@ -19,7 +22,8 @@ for (i in 1:nsub) {
     coef <- rbind(coef,coefficients(fit))
   }
 }
-# row coefficients stay same, intensity/column coefficients are set to mean over nsub (for loop)
-coefsubmean <- c(colMeans(coef[,design$Xtype!=3]),coef[,design$Xtype==3])
-return(coefsubmean)
+# sort row coefficients, intensity/column coefficients are set to mean over nsub (for loop)
+coef <- c(colMeans(coef[,design$Xtype!=3]),sort(coef[,design$Xtype==3]))
+fit$coefficients <- coef
+return(fit)
 }

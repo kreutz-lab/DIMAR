@@ -1,18 +1,14 @@
 Sys.setenv(LANG="en")
-library("SummarizedExperiment")
 library("stats")
 source("readInMaxQuant.R")
-source("ConstructDesignMatrix.R")
-source("ConstructRegularizationMatrix.R")
 source("LearnPattern.R")
+source("ConstructReferenceData.R")
+source("AssignPattern.R")
 
-filename <- "proteinGroups.txt"
-out <- maxQuantToMatrix(filename)
-out <- out[!rowData(out)[["ixs"]],] 
+filename <- "TestData.txt"
+mtx <- maxQuantToMatrix(filename)
+mtx <- mtx[1:100,1:10]
 
-# extract data and feature annotation
-mtx <- assays(out)[["data"]]
-mtx <- mtx[1:10,1:5]
-colnames(mtx) <- gsub("LFQ intensity","",colnames(mtx))
-
-coef <- LearnPattern(mtx)
+fit <- LearnPattern(mtx)
+sim <- ConstructReferenceData(mtx)
+sim <- AssignPattern(sim,fit)
