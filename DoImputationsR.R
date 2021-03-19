@@ -110,9 +110,11 @@ DoImputationsR <- function(mtx,method=NULL,lib=NULL) {
       Imp <- GMS.Lasso(mtx,log.scale=T,TS.Lasso=T)
       
     } else {
-      error(paste('WriteinR.m: library',lib,'is not recognized. Expand code here.'))
+      Imp <- NULL
+      error(paste('DoImputationsR.m: library',lib,'is not recognized. Expand code here.'))
     }
   }, error = function(e) {
+    Imp <<- NULL
     warning(paste('DoImputationsR.R: Error in R package',lib,'within algorithm',method,':',conditionMessage(e)))
   })
   return(Imp)

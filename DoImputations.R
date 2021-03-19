@@ -31,17 +31,13 @@ DoImputations <- function(mtx,method=NULL,lib=NULL) {
   
   # loop over imputation methods
   for (m in 1:length(method)) {
-    # require R package of imputation method
-    tryCatch({ require(lib[m],character.only=T)}, # character.only needed when loading 'character'
-      warning=function(c) {install.packages(lib[m])
-        require(lib[m],character.only=T) })
     if (length(dim(mtx))>2) {
       # parallelize over simulated patterns (3rd dimension of mtx)
-      I <- foreach(i=1:dim(mtx)[3],.combine='cbind',.packages=lib[m]) %dopar% {
+      I <- foreach(i=1:dim(mtx)[3],.combine='cbind',.packages=lib[m],.export=c("DoImputationsR")) %dopar% {
         DoImputationsR(mtx[,,i],method[m],lib[m])
       }
       if (!is.null(I)) {
-        Imp[,,,m] <- I
+        Imp[,,,m] <- as.matrix(I[,1:dim(mtx)[2]])
       } else { warning('DoImputations.R: Imputation of method ',method[m],' not feasible.')}
     } else {
       I <- DoImputationsR(mtx,method[m],lib[m])
