@@ -1,19 +1,40 @@
-AssignPattern <- function(mtx,fit,npat=0) {
+AssignPattern <- function(ref,coef,mtx=NULL,npat=0) {
 
   if (npat==0){
-    if (dim(mtx)[1]*dim(mtx)[2]<50000) {
+    if (dim(ref)[1]*dim(ref)[2]<50000) {
       npat<-20
-    } else if (dim(mtx)[1]*dim(mtx)[2]<100000){
+    } else if (dim(ref)[1]*dim(ref)[2]<100000){
       npat<-10
     } else{
       npat<-5
     }
   }
-  npat <-1
-  X <- ConstructDesignMatrix(mtx)
-  sim <- matrix(NA,dim(mtx)[1],dim(mtx)[2])
+  
+  X <- ConstructDesignMatrix(ref)
+  pat <- array(NA,c(dim(ref),npat))
+  
   for (i in 1:npat){
-    yhat <- predict.glm(fit)
+    # probability of MV by logistic regression
+    yhat <- exp(X$X%*%coef)/(1+exp(X$X%*%coef))
+    p <- matrix(yhat,nrow=dim(ref)[1])
+    # binomial draw
+    r <- matrix(runif(length(yhat)),nrow=dim(p)[1])
+    ind <- which(r<p & !is.na(ref),arr.ind=T)
+    # if ref has MV already, #MV = #MV of original mtx
+    if (!is.null(mtx) & dim(ind)[1]>sum(is.na(mtx))) {
+      ind <- ind[sample(1:length(ind),sum(is.na(mtx))),]
+    }
+    # Assign NA to ref
+    pat1 <- ref
+    pat1[ind] <- NA
+    # if protein not measured at all, randomly assign one data point
+    if (any(rowSums(is.na(pat1))==dim(pat1)[2])) {
+      allna <- which(rowSums(is.na(pat1))==dim(pat1)[2])
+      allna <- cbind(allna,sample(1:dim(pat1)[2],length(allna)))
+      pat1[allna] <- ref[allna]
+    }
+    pat[,,i] <- pat1
   }
-  return(yhat)
+  print(paste(npat,'patterns of MVs are assigned.'))
+  return(pat)
 }

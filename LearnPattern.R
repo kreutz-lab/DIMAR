@@ -4,13 +4,20 @@ source("ConstructRegularizationMatrix.R")
 LearnPattern <- function(mtx) {
   
 # Subsample indices
-nsub <- ceiling(dim(mtx)[1]/5)
-npersub <- ceiling(dim(mtx)[1]/nsub)
-indrand <- sample(1:dim(mtx)[1],dim(mtx)[1])
+if (dim(mtx)[1]>1000) {
+  nsub <- ceiling(dim(mtx)[1]/1000)
+  indrand <- sample(1:dim(mtx)[1],dim(mtx)[1])
+  npersub <- ceiling(dim(mtx)[1]/nsub)
+} else { 
+  nsub<-1 
+  ind <- 1:dim(mtx)[1]
+}
 
 for (i in 1:nsub) {
   #  i <- 1
-  ind <- indrand[(npersub*(i-1)+1):(npersub*i)]
+  if (nsub>1){
+    ind <- indrand[(npersub*(i-1)+1):(npersub*i)]
+  }
   design <- ConstructDesignMatrix(mtx[ind,])
   design <- ConstructRegularizationMatrix(design)
   
@@ -23,7 +30,10 @@ for (i in 1:nsub) {
   }
 }
 # sort row coefficients, intensity/column coefficients are set to mean over nsub (for loop)
-coef <- c(colMeans(coef[,design$Xtype!=3]),sort(coef[,design$Xtype==3]))
-fit$coefficients <- coef
-return(fit)
+if (nsub>1){
+  coef <- c(colMeans(coef[,design$Xtype!=3]),sort(coef[,design$Xtype==3]))
+}
+
+  print('Pattern of MVs is learned by logistic regression.')
+  return(coef)
 }

@@ -9,10 +9,9 @@ source("DoImputations.R")
 
 filename <- "TestData.txt"
 mtx <- maxQuantToMatrix(filename)
-mtx <- mtx[1:100,1:10]
-
-fit <- LearnPattern(mtx)
+coef <- LearnPattern(mtx)
 ref <- ConstructReferenceData(mtx)
-sim <- AssignPattern(ref,fit)
+sim <- AssignPattern(ref,coef,mtx)
 
-imp <- DoImputations(mtx)
+Imputations <- DoImputations(sim)
+Performance <- EvaluatePerformance(Imputations,ref,sim)

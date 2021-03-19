@@ -31,11 +31,10 @@ DoImputations <- function(mtx,method=NULL,lib=NULL) {
   
   # loop over imputation methods
   for (m in 1:length(method)) {
-    print(m)
+    # require R package of imputation method
     tryCatch({ require(lib[m],character.only=T)}, # character.only needed when loading 'character'
       warning=function(c) {install.packages(lib[m])
         require(lib[m],character.only=T) })
-    print(method[m])
     if (length(dim(mtx))>2) {
       # parallelize over simulated patterns (3rd dimension of mtx)
       I <- foreach(i=1:dim(mtx)[3],.combine='cbind',.packages=lib[m]) %dopar% {
@@ -43,14 +42,21 @@ DoImputations <- function(mtx,method=NULL,lib=NULL) {
       }
       if (!is.null(I)) {
         Imp[,,,m] <- I
-      } else { warning('DoImputations.R: Imputation of method ',method[m],' not possible.')}
+      } else { warning('DoImputations.R: Imputation of method ',method[m],' not feasible.')}
     } else {
       I <- DoImputationsR(mtx,method[m],lib[m])
       if (!is.null(I)) {
         Imp[,,1,m] <- as.matrix(I[,1:dim(mtx)[2]])
-      } else { warning('DoImputations.R: Imputation of method ',method[m],' not possible.')}
+      } else { warning('DoImputations.R: Imputation of method ',method[m],' not feasible.')}
     }
+    print(paste('Imputation with',method[m],'done.'))
   }
-  return(Imp)
+  # delete methods which have NA in imputation
+  if (any(is.na(Imp))){
+    naid <- which(is.na(Imp),arr.ind=T)
+    Imp <- Imp[,,,!unique(id[,4])] # 4th dim are algorithms
+    method <- method[!unique(id[,4])]
+  }
+  return(list(Imp,method))
 }
 

@@ -19,13 +19,14 @@ ConstructReferenceData <- function(mtx,cut=0.2) {
   # Take mtx1 multiple times and normalize to protein means/std
   idxnew <- c()
   while (length(idxnew)<length(idx2)) {
-    if (length(idxnew)+length(idx1)<=length(idx2)) {
-      idxnew = c(idxnew, 1:dim(mtx)[1])
+    if (length(idxnew)+length(idx1)<length(idx2)) {
+      idxnew = c(idxnew, idx1)
     } else {
       idxnew = c(idxnew, sample(length(idx1),length(idx2)-length(idxnew)))
     }
   }
   mtx1 <- rbind(mtx1, ( mtx[idxnew,]-rowMeans(mtx[idxnew,],na.rm=T) ) / rowSds(mtx[idxnew,],na.rm=T) * rowSds(mtx[idx2,],na.rm=T) + rowMeans(mtx[idx2,],na.rm=T) )
   mtx <- mtx1[order(rowSums(is.na(mtx1))),]
+  print('Reference data is constructed.')
   return(mtx)
   }
