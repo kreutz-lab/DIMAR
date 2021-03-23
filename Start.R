@@ -6,6 +6,8 @@ source("LearnPattern.R")
 source("ConstructReferenceData.R")
 source("AssignPattern.R")
 source("DoImputations.R")
+source("EvaluatePerformance.R")
+source("DoOptimalImputation.R")
 
 filename <- "TestData.txt"
 mtx <- maxQuantToMatrix(filename)
@@ -13,5 +15,7 @@ coef <- LearnPattern(mtx)
 ref <- ConstructReferenceData(mtx)
 sim <- AssignPattern(ref,coef,mtx)
 
-Imputations <- DoImputations(sim)
-Performance <- EvaluatePerformance(Imputations,ref,sim)
+Imputations <- DoImputations(sim,c('impSeqRob','ppca','imputePCA'))
+Performance <- EvaluatePerformance(Imputations,ref,sim,'RMSE',TRUE)
+Imp <- DoOptimalImputation(mtx,rownames(Performance))
+write.csv(Imp, file=paste0("Imp_",filename))
