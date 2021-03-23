@@ -53,6 +53,9 @@ DoImputations <- function(mtx,method=NULL,lib=NULL) {
     Imp <- Imp[,,,!unique(id[,4])] # 4th dim are algorithms
     method <- method[!unique(id[,4])]
   }
-  return(list(Imp,method))
+
+  Imp <- list(Imp,method)
+  names(Imp) <- c('Imp','method')
+  return(Imp)
 }
 
