@@ -25,7 +25,7 @@ dimarDoImputations <- function(mtx, method=NULL, lib=NULL) {
 
   if (length(dim(mtx))>2) {
     # load parallel package
-    registerDoParallel()
+    doParallel::registerDoParallel()
 
     # Initialize imputation array
     Imp <- array(NA,c(dim(mtx),length(method)))
