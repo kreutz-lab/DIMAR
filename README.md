@@ -21,7 +21,8 @@ devtools::install_github("kreutz-lab/DIMAR")
 Example usage of package:
 ```
 library(DIMAR)
-filepath <- system.file("extdata", "TestData.txt", package = "DIMAR")
+filename <- "TestData.txt"
+filepath <- system.file("extdata", filename, package = "DIMAR")
 mtx <- dimarReadInMaxQuant(filepath)
 
 coef <- dimarLearnPattern(mtx)
