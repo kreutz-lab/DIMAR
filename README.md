@@ -22,14 +22,14 @@ Example usage of package:
 ```
 library(DIMAR)
 filepath <- system.file("extdata", "TestData.txt", package = "DIMAR")
-mtx <- maxQuantToMatrix(filepath)
+mtx <- dimarReadInMaxQuantaxQuantToMatrix(filepath)
 
-coef <- LearnPattern(mtx)
-ref <- ConstructReferenceData(mtx)
-sim <- AssignPattern(ref,coef,mtx)
+coef <- dimarLearnPattern(mtx)
+ref <- dimarConstructReferenceData(mtx)
+sim <- dimarAssignPattern(ref,coef,mtx)
 
-Imputations <- DoImputations(sim,c('impSeqRob','ppca','imputePCA'))
-Performance <- EvaluatePerformance(Imputations,ref,sim,'RMSE',TRUE)
-Imp <- DoOptimalImputation(mtx,rownames(Performance))
+Imputations <- dimarDoImputations(sim,c('impSeqRob','ppca','imputePCA'))
+Performance <- dimarEvaluatePerformance(Imputations,ref,sim,'RMSE',TRUE)
+Imp <- dimarDoOptimalImputation(mtx,rownames(Performance))
 write.csv(Imp, file=paste0("Imp_",filename))
 ```
