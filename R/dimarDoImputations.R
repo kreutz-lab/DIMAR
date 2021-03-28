@@ -37,7 +37,7 @@ dimarDoImputations <- function(mtx, method=NULL, lib=NULL) {
   for (m in 1:length(method)) {
     if (length(dim(mtx))>2) {
       # parallelize over simulated patterns (3rd dimension of mtx)
-      I <- foreach(i=1:dim(mtx)[3], .combine='cbind', .packages=lib[m], .export=c("dimarDoImputationsR")) %dopar% {
+      I <- foreach(i=1:dim(mtx)[3], .combine='cbind', .packages=lib[m], .export=c("dimarDoImputationsR")) foreach::`%dopar%` {
         dimarDoImputationsR(mtx[,,i],method[m], lib[m])
       }
       if (!is.null(I)) {
