@@ -14,7 +14,7 @@ Authors@R: c(person("Janine", "Egert",
   role = c("aut","ctb"), 
   comment = c(ORCID = "0000-0002-5488-0985")))
 Description: Data-driven selction of an imputation algorithm in R
-Imports: stats, graphics, utils, R.utils, SummarizedExperiment, doParallel, R.matlab, amap, mice , norm, Amelia, Hmisc, imputeLCMD, missForest, softImpute, VIM, rrcovNA, missMDA, mi, DMwR, GMSimpute, pcaMethods, impute, imputation
+Imports: stats, graphics, utils, R.utils, SummarizedExperiment, doParallel, matrixStats, R.matlab, amap, mice , norm, Amelia, Hmisc, imputeLCMD, missForest, softImpute, VIM, rrcovNA, missMDA, mi, DMwR, GMSimpute, pcaMethods, impute, imputation
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true

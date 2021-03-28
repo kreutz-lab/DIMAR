@@ -32,7 +32,7 @@ dimarConstructReferenceData <- function(mtx, cut=0.2) {
       idxnew = c(idxnew, sample(length(idx1), length(idx2)-length(idxnew)))
     }
   }
-  mtx1 <- rbind(mtx1, (mtx[idxnew,]-rowMeans(mtx[idxnew,],na.rm=T)) / rowSds(mtx[idxnew,], na.rm=T) * rowSds(mtx[idx2,], na.rm=T) + rowMeans(mtx[idx2,], na.rm=T) )
+  mtx1 <- rbind(mtx1, (mtx[idxnew,]-rowMeans(mtx[idxnew,],na.rm=T)) / matrixStats::rowSds(mtx[idxnew,], na.rm=T) * matrixStats::rowSds(mtx[idx2,], na.rm=T) + rowMeans(mtx[idx2,], na.rm=T) )
   mtx <- mtx1[order(rowSums(is.na(mtx1))),]
   print('Reference data is constructed.')
   return(mtx)
