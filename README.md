@@ -22,7 +22,7 @@ Example usage of package:
 ```
 library(DIMAR)
 filepath <- system.file("extdata", "TestData.txt", package = "DIMAR")
-mtx <- dimarReadInMaxQuantaxQuantToMatrix(filepath)
+mtx <- dimarReadInMaxQuant(filepath)
 
 coef <- dimarLearnPattern(mtx)
 ref <- dimarConstructReferenceData(mtx)
