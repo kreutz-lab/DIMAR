@@ -1,23 +1,29 @@
-
-DoImputationsR <- function(mtx,method=NULL,lib=NULL) {
+#' dimarDoImputationsR
+#'
+#' @description Helper function for DoImputations. Actually applies the imputation functions
+#' of various R packages for to a quantitative matrix.
+#' @return Quantitaive matrix, on which impuation was performed
+#' @param mtx Quantitative matrix
+#' @param method Imputation method
+#' @param lib R package
+#' @export dimarDoImputationsR
+#' @examples Sample example to demonstrate the function
+dimarDoImputationsR <- function(mtx, method=NULL, lib=NULL) {
   if (is.null(method)) {
     warning('DoImputations.R: No method given. No imputation performed.')
     Imp <- {}
   }
   if (is.null(lib)) {
-    lib <- GetLib(method)
-    tryCatch({ require(lib[m],character.only=T)}, # character.only needed when loading 'character'
-             warning=function(c) {install.packages(lib[m])
-               require(lib[m],character.only=T) })
+    lib <- dimarGetLib(method)
   }
   tryCatch({
     if (lib=='pcaMethods') {
       mtx[is.na(mtx)]<-NA
-      if (sum(rowSums(is.na(mtx))>=ncol(mtx))>0) { 
-        Imp <- {} 
+      if (sum(rowSums(is.na(mtx)) >= ncol(mtx))>0) {
+        Imp <- {}
       } else {
-        I <- pcaMethods::pca(mtx,method=method)
-        Imp <- completeObs(I) 
+        I <- pcaMethods::pca(mtx, method=method)
+        Imp <- completeObs(I)
       }
     } else if (lib=='impute') {
       I <- impute.knn(as.matrix(mtx))
@@ -26,10 +32,10 @@ DoImputationsR <- function(mtx,method=NULL,lib=NULL) {
       s <- prelim.norm(mtx)
       thetahat <- em.norm(s)
       rngseed(1)
-      Imp <- imp.norm(s,thetahat,dat)
+      Imp <- imp.norm(s, thetahat, dat)
     } else if (lib=='missMDA') {
       f <- get(method)
-      imp <- f(data.frame(mtx),nboot=1)
+      imp <- f(data.frame(mtx), nboot=1)
       if (method=='MIPCA') {
         Imp <- imp$res.imputePCA
       } else {
@@ -39,7 +45,7 @@ DoImputationsR <- function(mtx,method=NULL,lib=NULL) {
       if (grepl('imp',method)) {
         f <- get(method)
       } else {
-        f <- get(paste('imp',method,sep=''))
+        f <- get(paste('imp', method, sep=''))
       }
       Imp <- f(mtx)
       if (grepl('SeqRob',method)) {
@@ -55,67 +61,64 @@ DoImputationsR <- function(mtx,method=NULL,lib=NULL) {
       if (method=='QRILC') {
         Imp <- imputeLCMD::impute.QRILC(as.matrix(mtx))[[1]]
       } else {
-        f <- get(paste('impute.',method,sep=''))
+        f <- get(paste('impute.', method, sep=''))
         Imp <- f(as.matrix(mtx))
       }
-    } else if (lib=='imputation') {    
+    } else if (lib=='imputation') {
       f <- get(method)
-      if (grepl('SVD',method)) {
+      if (grepl('SVD', method)) {
         Imp <- f(mtx, k=3)$x
-      } else if (grepl('kNN',method)) {
+      } else if (grepl('kNN', method)) {
         Imp <- f(mtx, k=3)$x
-      } else if (grepl('SVT',method)) {
-        Imp <- f(mtx,lambda=3)$x
+      } else if (grepl('SVT', method)) {
+        Imp <- f(mtx, lambda=3)$x
       } else {
         I <- f(mtx)
         Imp <- I$x
       }
-    } else if (lib=='mice') {  
-      colnames(mtx)<-c(paste0("X",1:dim(mtx)[2])) 
+    } else if (lib=='mice') {
+      colnames(mtx)<-c(paste0("X",1:dim(mtx)[2]))
       I <- mice::mice(mtx, m=1, method = method)
       Imp <- mice::complete(I)
     } else if (lib=='Amelia') {
-      tryCatch( { require(R.utils) },
-                warning=function(c) {install.packages("R.utils")
-                  require(R.utils) })  
       # if isSymmetric, R aborts without error message
-      if (isSymmetric(mtx)) { 
-        f <- withTimeout({Amelia::amelia(mtx,m=1)},timeout = 1, cpu = 100,elapsed=3600) # of all pride mtx the max time of amelia was cpu=1
-        Imp <- f$imputations[[1]] 
+      if (isSymmetric(mtx)) {
+        f <- withTimeout({Amelia::amelia(mtx,m=1)}, timeout = 1, cpu = 100, elapsed=3600) # of all pride mtx the max time of amelia was cpu=1
+        Imp <- f$imputations[[1]]
       } else { Imp <- NULL }
     } else if (lib=='missForest') {
       f <- missForest(mtx)
       Imp <- f$ximp
     } else if (lib=='Hmisc') {
-      colnames(mtx)<-c(paste0("X",1:dim(mtx)[2]))
+      colnames(mtx)<-c(paste0("X", 1:dim(mtx)[2]))
       formula <- '~ X1'
       for (j in 2:dim(mtx)[2]) {
-        formula <- paste(formula,' +X',j,sep='')
+        formula <- paste(formula,' +X', j, sep='')
       }
       if (method=='aregImpute') {
-        f <- Hmisc::aregImpute(as.formula(formula), data=data.frame(mtx), n.impute=1, type="pmm") 
+        f <- Hmisc::aregImpute(as.formula(formula), data=data.frame(mtx), n.impute=1, type="pmm")
       } else {
         f <- Hmisc::aregImpute(as.formula(formula), data=data.frame(mtx), n.impute=1, type=method)
       }
-      Imp <- array(unlist( Hmisc::impute.transcan(f, imputation=TRUE, data=data.frame(mtx), list.out = TRUE)) ,dim=dim(mtx ))
-      
+      Imp <- array(unlist( Hmisc::impute.transcan(f, imputation=TRUE, data=data.frame(mtx), list.out = TRUE)), dim=dim(mtx ))
+
     } else if (lib=='DMwR') {
       Imp <- DMwR::knnImputation(mtx)
-      
+
     } else if (lib=='mi') {
       I <- mi(data.frame(mtx), n.chains=1)
       Imp <- mi::complete(I)[1:length(mtx)]
-      
+
     } else if (lib=='GMSimpute') {
-      Imp <- GMS.Lasso(mtx,log.scale=T,TS.Lasso=T)
-      
+      Imp <- GMS.Lasso(mtx, log.scale=T, TS.Lasso=T)
+
     } else {
       Imp <- NULL
-      error(paste('DoImputationsR.m: library',lib,'is not recognized. Expand code here.'))
+      error(paste('dimarDoImputationsR.m: library', lib, 'is not recognized. Expand code here.'))
     }
   }, error = function(e) {
     Imp <<- NULL
-    warning(paste('DoImputationsR.R: Error in R package',lib,'within algorithm',method,':',conditionMessage(e)))
+    warning(paste('dimarDoImputationsR.R: Error in R package', lib, 'within algorithm', method,':', conditionMessage(e)))
   })
   return(Imp)
 }

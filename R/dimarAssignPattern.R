@@ -1,18 +1,27 @@
-AssignPattern <- function(ref,coef,mtx=NULL,npat=0) {
-
-  if (npat==0){
+#' dimarAssignPattern
+#'
+#' @description Assigns patterns to reference dataset
+#' @return Reference dataset with applied pattern
+#' @param ref Reference dataset
+#' @param coef Logistic regression coefficients of missing value pattern
+#' @param mtx Quantitative matrix
+#' @param npat Number of patterns
+#' @export dimarAssignPattern
+#' @examples Sample example to demonstrate the function
+dimarAssignPattern <- function(ref, coef, mtx=NULL, npat=0) {
+  if (npat == 0){
     if (dim(ref)[1]*dim(ref)[2]<50000) {
-      npat<-20
+      npat <- 20
     } else if (dim(ref)[1]*dim(ref)[2]<100000){
-      npat<-10
+      npat <- 10
     } else{
-      npat<-5
+      npat <- 5
     }
   }
-  
-  X <- ConstructDesignMatrix(ref)
+
+  X <- dimarConstructDesignMatrix(ref)
   pat <- array(NA,c(dim(ref),npat))
-  
+
   for (i in 1:npat){
     # probability of MV by logistic regression
     yhat <- exp(X$X%*%coef)/(1+exp(X$X%*%coef))
