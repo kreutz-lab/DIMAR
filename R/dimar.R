@@ -13,7 +13,7 @@
 #' Imp <- dimar(file)
 #' Imp <- dimar('proteinGroups.txt','LFQ')
 
-dimar <- function(mtx,pattern<-NULL) {
+dimar <- function(mtx,pattern=NULL) {
   
 if (is.character(mtx)) {
   file <- mtx

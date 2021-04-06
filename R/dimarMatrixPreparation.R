@@ -8,7 +8,7 @@
 #' @examples
 #' mtx <- dimarMatrixPreparation(mtx)
 
-dimarMatrixPreparation <- function(mtx,nacut=1,logflag='auto'){
+dimarMatrixPreparation <- function(mtx,nacut=2,logflag='auto'){
 
     # if no NA: 0 -> NA
     mtx[mtx == "NaN"] <- NA
