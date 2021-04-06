@@ -1,10 +1,10 @@
-#' DIMA: Data-driven selection of an imputation algorithm (Egert et al.)
+#' DIMAR: Data-driven selection of an imputation algorithm in R
 #'
-#' - Learn pattern of missing values
-#' - Define reference data R with fewer MVs
-#' - Generate patterns of missing values to R
-#' - Apply multiple imputation algorithms
-#' - Impute original data with best-performing imp. algorithm
+#' 1) Learn pattern of missing values\n
+#' 2) Define reference data R with fewer MVs\n
+#' 3) Generate patterns of missing values to R\n
+#' 4) Apply multiple imputation algorithms\n
+#' 5) Impute original data with best-performing imputation algorithm\n
 #'
 #'@param mtx Data matrix or input file (.txt, .xls, .xlsx, .csv or .tsv)
 #'@param pattern Search pattern for specifying sample names read in as default data, if not specified the user will be asked
