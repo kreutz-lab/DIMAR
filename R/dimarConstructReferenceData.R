@@ -1,11 +1,15 @@
 #' dimarConstructReferenceData
 #'
-#' @description Constructs reference dataset
+#' @description Constructs reference dataset: Take data with least #MVs, enlarge data by proteins with least #MVs and normalize to all proteins 
 #' @return Reference dataset
 #' @param mtx Quantitative matrix
-#' @param cut Variable cut
+#' @param cut minimum number of proteins kept for the reference data
 #' @export dimarConstructReferenceData
-#' @examples Sample example to demonstrate the function
+#' @examples
+#' coef <- dimarLearnPattern(mtx)
+#' ref <- dimarConstructReferenceData(mtx)
+#' sim <- dimarAssignPattern(ref, coef, mtx)
+
 dimarConstructReferenceData <- function(mtx, cut=0.2) {
   if (!is.numeric(cut) || cut<0 || cut>100){
     warning(paste('dimarConstructReferenceData.R: Variable cut =',cut,'is not supported. Check here. Used cut = 0.2 instead.'))

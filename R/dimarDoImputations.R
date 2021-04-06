@@ -2,12 +2,14 @@
 #'
 #' @description Performs imputations
 #' @importFrom foreach %dopar%
-#' @return Imputated dataset
+#' @return Imputed data set(s)
 #' @param mtx Quantitative matrix
-#' @param method Imputation method
-#' @param lib Library
+#' @param method Imputation method(s)
+#' @param lib R packages of imputation methods (to be loaded in parallel loop 'foreach')
 #' @export dimarDoImputations
-#' @examples Sample example to demonstrate the function
+#' @examples
+#' Imputations <- dimarDoImputations(mtx, c('impSeqRob', 'ppca', 'imputePCA'))
+
 dimarDoImputations <- function(mtx, method=NULL, lib=NULL) {
   # Assign imputation methods
   if (is.null(method)) {
@@ -27,13 +29,8 @@ dimarDoImputations <- function(mtx, method=NULL, lib=NULL) {
   if (length(dim(mtx))>2) {
     # load parallel package
     doParallel::registerDoParallel()
-
-    # Initialize imputation array
-    Imp <- array(NA,c(dim(mtx),length(method)))
-  } else {
-    Imp <- array(NA,c(dim(mtx), 1, length(method)))
   }
-
+  Imp <- list()
   # loop over imputation methods
   for (m in 1:length(method)) {
     if (length(dim(mtx))>2) {
@@ -42,12 +39,12 @@ dimarDoImputations <- function(mtx, method=NULL, lib=NULL) {
         dimarDoImputationsR(mtx[,,i],method[m], lib[m])
       }
       if (!is.null(I)) {
-        Imp[,,,m] <- as.matrix(I[, 1:dim(mtx)[2]])
+        Imp[[method[m]]] <- array(as.matrix(I),dim=c(dim(mtx)[1],dim(mtx)[2],dim(mtx)[3]))
       } else { warning('DoImputations.R: Imputation of method ',method[m],' not feasible.')}
     } else {
       I <- dimarDoImputationsR(mtx,method[m],lib[m])
       if (!is.null(I)) {
-        Imp[, , 1, m] <- as.matrix(I[,1:dim(mtx)[2]])
+        Imp[[method[m]]] <- as.matrix(I[,1:dim(mtx)[2]])
       } else { warning('DoImputations.R: Imputation of method ',method[m],' not feasible.')}
     }
     print(paste('Imputation with',method[m],'done.'))
@@ -55,12 +52,8 @@ dimarDoImputations <- function(mtx, method=NULL, lib=NULL) {
   # delete methods which have NA in imputation
   if (any(is.na(Imp))){
     naid <- which(is.na(Imp), arr.ind=T)
-    Imp <- Imp[, , , !unique(id[,4])] # 4th dim are algorithms
-    method <- method[!unique(id[,4])]
+    Imp <- Imp[[!unique(naid[,4])]] # 4th dim are algorithms
   }
-
-  Imp <- list(Imp,method)
-  names(Imp) <- c('Imp','method')
   return(Imp)
 }
 

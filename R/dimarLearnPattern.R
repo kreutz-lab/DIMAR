@@ -1,10 +1,12 @@
 #' dimarLearnPattern
 #'
-#' @description Learns missing value pattern from quantitative matrix-
+#' @description Learns missing value occurence pattern from quantitative matrix by a logistic regression model
 #' @return Logistic regression coefficients describing missing value pattern
 #' @param mtx Quantitative matrix
 #' @export dimarLearnPattern
-#' @examples Sample example to demonstrate the function
+#' @examples 
+#' coef <- dimarLearnPattern(mtx)
+
 dimarLearnPattern <- function(mtx) {
   # Subsample indices
   if (dim(mtx)[1] > 1000) {

@@ -1,20 +1,22 @@
 #' dimarEvaluatePerformance
 #'
-#' @description Evaluates impuation performance.
+#' @description Evaluates performance of imputation algorithms.
 #' @return Data frame containing the following performance measures for
 #' each imputation method: Deviation, RMSE, RSR, p-Value_F-test, Accuracy, PCC, and in case
 #' of RMSEttest=TRUE the RMSE t-test result
-#' @param Imputations Imputations
-#' @param ref ref
-#' @param sim sim
-#' @param rankby rankby
-#' @param RMSEttest RMSEttest
-#' @param group group
+#' @param Imputations Imputed data set(s)
+#' @param ref Reference data
+#' @param sim Simulated patterns of MVs
+#' @param rankby Performance measure which should serve as rank criterion
+#' @param RMSEttest flag if RMSE of ttest should be calculated
+#' @param group indices for ttest
 #' @export dimarEvaluatePerformance dimarEvaluatePerformance
-#' @examples Sample example to demonstrate the function
+#' @examples 
+#' Performance <- dimarEvaluatePerformance(Imputations, ref, sim)
+
 dimarEvaluatePerformance <- function(Imputations, ref, sim, rankby='RMSE', RMSEttest=TRUE, group='cluster') {
   # Initialize performance arrays
-  Dev <- array(NA, c(dim(Imputations$Imp)[3], dim(Imputations$Imp)[4]))
+  Dev <- array(NA, c(dim(Imputations[[1]])[3], length(Imputations)))
   RMSE <- Dev
   RSR <- Dev
   pF <- Dev
@@ -32,36 +34,36 @@ dimarEvaluatePerformance <- function(Imputations, ref, sim, rankby='RMSE', RMSEt
   }
   }
 
-  for (p in 1:dim(Imputations$Imp)[3]) { # loop over #patterns
-  if (RMSEttest) {
-    for (t in 1:dim(Imputations$Imp)[1]) {
-      htest = t.test(ref[t, group==1], ref[t,group==2])
-      ttest[t] <- htest$statistic
+  for (p in 1:dim(Imputations[[1]])[3]) { # loop over #patterns
+    if (RMSEttest) {
+      for (t in 1:dim(ref)[1]) {
+        htest = t.test(ref[t, group==1], ref[t,group==2])
+        ttest[t] <- htest$statistic
+      }
+      ttest[!is.finite(ttest)] <- NULL
     }
-    ttest[!is.finite(ttest)] <- NULL
-  }
-  for (a in 1:dim(Imputations$Imp)[4]) { # loop over imputation algorithms
-    im <- Imputations$Imp[, , p, a]
-    if (!any(is.na(im))) {
-        ndata = sum(is.na(sim[, , p]) & !is.na(ref))
-        Diff <- im-ref
-        Dev[p,a] <- sum(abs(Diff), na.rm=T)/ndata
-        RMSE[p,a] <- sqrt(sum(Diff^2, na.rm=T)/ndata)
-        RSR[p,a] <- RMSE[p,a]/sd(ref, na.rm=T)
-        pF[p,a] <- var.test(im,ref)$p.value
-        Acc[p,a] <- length(which(abs(Diff/ref) < 0.05))/dim(ref)[1]/dim(ref)[2]*100
-        PCC[p,a] <- cor(as.vector(im), as.vector(ref))
-        if (RMSEttest){
-          for (t in 1:dim(ref)[1]) {
-            htesti <- t.test(im[t,group==1], im[t,group==2])
-            ttesti[t] <- htesti$statistic
+    for (a in 1:length(Imputations)) { # loop over imputation algorithms
+      im <- Imputations[[a]][, , p]
+      if (!any(is.na(im))) {
+          ndata = sum(is.na(sim[, , p]) & !is.na(ref))
+          Diff <- im-ref
+          Dev[p,a] <- sum(abs(Diff), na.rm=T)/ndata
+          RMSE[p,a] <- sqrt(sum(Diff^2, na.rm=T)/ndata)
+          RSR[p,a] <- RMSE[p,a]/sd(ref, na.rm=T)
+          pF[p,a] <- var.test(im,ref)$p.value
+          Acc[p,a] <- length(which(abs(Diff/ref) < 0.05))/dim(ref)[1]/dim(ref)[2]*100
+          PCC[p,a] <- cor(as.vector(im), as.vector(ref))
+          if (RMSEttest){
+            for (t in 1:dim(ref)[1]) {
+              htesti <- t.test(im[t,group==1], im[t,group==2])
+              ttesti[t] <- htesti$statistic
+            }
+            ttesti[!is.finite(ttesti)] <- NULL
+            RMSEt[p,a] <- sqrt(sum((ttest-ttesti)^2, na.rm=T) /max(length(ttest), length(ttesti)))
           }
-          ttesti[!is.finite(ttesti)] <- NULL
-          RMSEt[p,a] <- sqrt(sum((ttest-ttesti)^2, na.rm=T) /max(length(ttest), length(ttesti)))
-        }
+      }
     }
-  }
-  rank[p,] <- eval(parse(text=paste('order(', rankby, '[p,])', sep="")))
+    rank[p,] <- eval(parse(text=paste('order(', rankby, '[p,])', sep="")))
   }
   if (p==1){
   if (RMSEttest){
@@ -80,7 +82,7 @@ dimarEvaluatePerformance <- function(Imputations, ref, sim, rankby='RMSE', RMSEt
   }
   }
   Performance <- Performance[rank,]
-  rownames(Performance) <- Imputations$method
+  rownames(Performance) <- names(Imputations)
   if (RMSEttest) {
   colnames(Performance) <- c('Deviation', 'RMSE', 'RSR', 'p-Value_F-test', 'Accuracy',
                              'PCC', 'RMSEttest')

@@ -1,10 +1,12 @@
 #' dimarGetLib
 #'
-#' @description Gets R library to the inputted imputation method
+#' @description Gets R library of the imputation method
 #' @return R library of entered imputation method
 #' @param method Imputation method string
 #' @export dimarGetLib
-#' @examples Sample example to demonstrate the function
+#' @examples 
+#' lib <- dimarGetLib('impSeq')
+
 dimarGetLib <- function(method) {
   if (method=='midastouch' || method=='rf' || method=='mean' || method=='norm' || method=='ri' || method=='pmm' || method=='sample' || method=='cart')
     { lib <-'mice' }

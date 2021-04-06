@@ -1,3 +1,18 @@
+#' DIMA: Data-driven selection of an imputation algorithm (Egert et al.)
+#'
+#' - Learn pattern of missing values
+#' - Define reference data R with fewer MVs
+#' - Generate patterns of missing values to R
+#' - Apply multiple imputation algorithms
+#' - Impute original data with best-performing imp. algorithm
+#'
+#'@param mtx Data matrix or input file (.txt, .xls, .xlsx, .csv or .tsv)
+#'@param pattern Search pattern for specifying sample names read in as default data, if not specified the user will be asked
+#' @examples 
+#' Imp <- dimar(mtx)
+#' Imp <- dimar(file)
+#' Imp <- dimar('proteinGroups.txt','LFQ')
+
 dimar <- function(mtx,pattern<-NULL) {
   
 if (is.character(mtx)) {
@@ -16,7 +31,7 @@ if (is.character(pattern)) {
   mtx <- as.matrix(mtx[, grepl(pattern, names(mtx))])
 }
 
-mtx <- dimarFiltering(mtx)
+mtx <- dimarMatrixPreparation(mtx)
 
 coef <- dimarLearnPattern(mtx)
 ref <- dimarConstructReferenceData(mtx)

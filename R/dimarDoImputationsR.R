@@ -1,13 +1,15 @@
 #' dimarDoImputationsR
 #'
 #' @description Helper function for DoImputations. Actually applies the imputation functions
-#' of various R packages for to a quantitative matrix.
-#' @return Quantitaive matrix, on which impuation was performed
+#' of various R packages to a quantitative matrix.
+#' @return Quantitaive matrix, on which imputation is performed
 #' @param mtx Quantitative matrix
 #' @param method Imputation method
-#' @param lib R package
+#' @param lib R package of imputation method
 #' @export dimarDoImputationsR
-#' @examples Sample example to demonstrate the function
+#' @examples
+#' I <- dimarDoImputationsR(mtx,'impSeq','rrcovNA')
+
 dimarDoImputationsR <- function(mtx, method=NULL, lib=NULL) {
   if (is.null(method)) {
     warning('DoImputations.R: No method given. No imputation performed.')

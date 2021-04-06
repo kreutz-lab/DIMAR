@@ -1,12 +1,16 @@
 #' dimarDoOptimalImputation
 #'
-#' @description Performs the optimal imputation to quantitative matrix.
-#' @return Quantitative matrix on which optimal imputation method was applied.
+#' @description Performs imputation of the quantitative matrix with the given method (optimally selected by DIMA)
+#' @return Imputed matrix
 #' @param mtx Quantitative matrix
-#' @param method Imputation method
-#' @param lib Library
+#' @param method Optimal imputation method
+#' @param lib R package of imputation method
 #' @export dimarDoOptimalImputation
-#' @examples Sample example to demonstrate the function
+#' @examples 
+#' Imputations <- dimarDoImputations(mtx)
+#' Performance <- dimarEvaluatePerformance(Imputations, ref, mtx)
+#' Imp <- dimarDoOptimalImputation(mtx, rownames(Performance))
+
 dimarDoOptimalImputation <- function(mtx, method, lib=NULL) {
 m <- 0
 Imp <- NULL

@@ -1,10 +1,17 @@
 #' dimarConstructDesignMatrix
 #'
-#' @description Constructs design matrix
-#' @return Design matrix
+#' @description Constructs design matrix with the factorial row/col predictors and the mean intensity
+#' @return list of response vector, design matrix and vector of predictor type
 #' @param mtx Quantitative matrix
 #' @export dimarConstructDesignMatrix
-#' @examples Sample example to demonstrate the function
+#' @examples 
+#' design <- dimarConstructDesignMatrix(mtx)
+#' design <- dimarConstructRegularizationMatrix(design)
+#' fit <- glm.fit(design$X, design$y, family=binomial())
+#' 
+#' design <- dimarConstructDesignMatrix(mtx)
+#' yhat <- exp(X$X%%coef)/(1+exp(X$X%*%coef))
+
 dimarConstructDesignMatrix <- function(mtx) {
   X <- matrix(0L, nrow=dim(mtx)[1]*dim(mtx)[2], ncol=dim(mtx)[1]+dim(mtx)[2]+2)
   # Intercept
