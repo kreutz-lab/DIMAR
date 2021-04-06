@@ -9,16 +9,16 @@ dimarDoImputations(mtx, method = NULL, lib = NULL)
 \arguments{
 \item{mtx}{Quantitative matrix}
 
-\item{method}{Imputation method}
+\item{method}{Imputation method(s)}
 
-\item{lib}{Library}
+\item{lib}{R packages of imputation methods (to be loaded in parallel loop 'foreach')}
 }
 \value{
-Imputated dataset
+Imputed data set(s)
 }
 \description{
 Performs imputations
 }
 \examples{
-Sample example to demonstrate the function
+Imputations <- dimarDoImputations(mtx, c('impSeqRob', 'ppca', 'imputePCA'))
 }

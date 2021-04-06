@@ -7,14 +7,15 @@
 dimarConstructRegularizationMatrix(design)
 }
 \arguments{
-\item{design}{Design matrix}
+\item{design}{list of response vector, design matrix and predictor type}
 }
 \value{
-Regularization matrix
+list of response vector, design matrix with regularization and predictor type
 }
 \description{
-Generates regularization matrix
+Generates regularization matrix: Expand the design matrix so each predictor has at least one positive entry, this exhibits the regression coefficients to get infinite
 }
 \examples{
-Sample example to demonstrate the function
+design <- dimarConstructDesignMatrix(mtx)
+design <- dimarConstructRegularizationMatrix(design)
 }

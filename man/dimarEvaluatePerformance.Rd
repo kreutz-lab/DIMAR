@@ -14,17 +14,17 @@ dimarEvaluatePerformance(
 )
 }
 \arguments{
-\item{Imputations}{Imputations}
+\item{Imputations}{Imputed data set(s)}
 
-\item{ref}{ref}
+\item{ref}{Reference data}
 
-\item{sim}{sim}
+\item{sim}{Simulated patterns of MVs}
 
-\item{rankby}{rankby}
+\item{rankby}{Performance measure which should serve as rank criterion}
 
-\item{RMSEttest}{RMSEttest}
+\item{RMSEttest}{flag if RMSE of ttest should be calculated}
 
-\item{group}{group}
+\item{group}{indices for ttest}
 }
 \value{
 Data frame containing the following performance measures for
@@ -32,8 +32,8 @@ each imputation method: Deviation, RMSE, RSR, p-Value_F-test, Accuracy, PCC, and
 of RMSEttest=TRUE the RMSE t-test result
 }
 \description{
-Evaluates impuation performance.
+Evaluates performance of imputation algorithms.
 }
 \examples{
-Sample example to demonstrate the function
+Performance <- dimarEvaluatePerformance(Imputations, ref, sim)
 }

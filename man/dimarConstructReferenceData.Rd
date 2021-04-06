@@ -9,14 +9,16 @@ dimarConstructReferenceData(mtx, cut = 0.2)
 \arguments{
 \item{mtx}{Quantitative matrix}
 
-\item{cut}{Variable cut}
+\item{cut}{minimum number of proteins kept for the reference data}
 }
 \value{
 Reference dataset
 }
 \description{
-Constructs reference dataset
+Constructs reference dataset: Take data with least #MVs, enlarge data by proteins with least #MVs and normalize to all proteins
 }
 \examples{
-Sample example to demonstrate the function
+coef <- dimarLearnPattern(mtx)
+ref <- dimarConstructReferenceData(mtx)
+sim <- dimarAssignPattern(ref, coef, mtx)
 }

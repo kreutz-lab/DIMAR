@@ -9,16 +9,18 @@ dimarDoOptimalImputation(mtx, method, lib = NULL)
 \arguments{
 \item{mtx}{Quantitative matrix}
 
-\item{method}{Imputation method}
+\item{method}{Optimal imputation method}
 
-\item{lib}{Library}
+\item{lib}{R package of imputation method}
 }
 \value{
-Quantitative matrix on which optimal imputation method was applied.
+Imputed matrix
 }
 \description{
-Performs the optimal imputation to quantitative matrix.
+Performs imputation of the quantitative matrix with the given method (optimally selected by DIMA)
 }
 \examples{
-Sample example to demonstrate the function
+Imputations <- dimarDoImputations(mtx)
+Performance <- dimarEvaluatePerformance(Imputations, ref, mtx)
+Imp <- dimarDoOptimalImputation(mtx, rownames(Performance))
 }

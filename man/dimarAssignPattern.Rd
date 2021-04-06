@@ -19,8 +19,10 @@ dimarAssignPattern(ref, coef, mtx = NULL, npat = 0)
 Reference dataset with applied pattern
 }
 \description{
-Assigns patterns to reference dataset
+Assigns patterns of MVs to reference data set with a logistic regression model
 }
 \examples{
-Sample example to demonstrate the function
+coef <- dimarLearnPattern(mtx)
+ref <- dimarConstructReferenceData(mtx)
+sim <- dimarAssignPattern(ref, coef, mtx)
 }

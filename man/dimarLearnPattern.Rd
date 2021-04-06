@@ -13,8 +13,8 @@ dimarLearnPattern(mtx)
 Logistic regression coefficients describing missing value pattern
 }
 \description{
-Learns missing value pattern from quantitative matrix-
+Learns missing value occurence pattern from quantitative matrix by a logistic regression model
 }
 \examples{
-Sample example to demonstrate the function
+coef <- dimarLearnPattern(mtx)
 }

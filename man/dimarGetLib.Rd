@@ -13,8 +13,8 @@ dimarGetLib(method)
 R library of entered imputation method
 }
 \description{
-Gets R library to the inputted imputation method
+Gets R library of the imputation method
 }
 \examples{
-Sample example to demonstrate the function
+lib <- dimarGetLib('impSeq')
 }

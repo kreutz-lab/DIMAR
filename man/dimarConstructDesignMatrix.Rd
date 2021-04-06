@@ -10,11 +10,16 @@ dimarConstructDesignMatrix(mtx)
 \item{mtx}{Quantitative matrix}
 }
 \value{
-Design matrix
+list of response vector, design matrix and vector of predictor type
 }
 \description{
-Constructs design matrix
+Constructs design matrix with the factorial row/col predictors and the mean intensity
 }
 \examples{
-Sample example to demonstrate the function
+design <- dimarConstructDesignMatrix(mtx)
+design <- dimarConstructRegularizationMatrix(design)
+fit <- glm.fit(design$X, design$y, family=binomial())
+
+design <- dimarConstructDesignMatrix(mtx)
+yhat <- exp(X$X\%\%coef)/(1+exp(X$X\%*\%coef))
 }

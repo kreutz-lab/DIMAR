@@ -11,15 +11,15 @@ dimarDoImputationsR(mtx, method = NULL, lib = NULL)
 
 \item{method}{Imputation method}
 
-\item{lib}{R package}
+\item{lib}{R package of imputation method}
 }
 \value{
-Quantitaive matrix, on which impuation was performed
+Quantitaive matrix, on which imputation is performed
 }
 \description{
 Helper function for DoImputations. Actually applies the imputation functions
-of various R packages for to a quantitative matrix.
+of various R packages to a quantitative matrix.
 }
 \examples{
-Sample example to demonstrate the function
+I <- dimarDoImputationsR(mtx,'impSeq','rrcovNA')
 }
