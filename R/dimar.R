@@ -17,6 +17,10 @@ if (is.character(mtx)) {
     mtx <- read.table(file='metabolomics.tsv',header=T)
   } else if (ext=='csv'){
     mtx <- read.csv(filename, allowEscapes = TRUE, check.names = FALSE,sep = "\t")
+  } else if (ext=='txt'){
+    mtx <- read.delim(file)
+  } else {
+    warning('Input file extension unknown. Expand code here or check input.')
   }
 } else { filename <- {} }
 if (class(mtx) == 'SingleCellExperiment' || class(mtx) == 'SummarizedExperiment') {
