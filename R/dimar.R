@@ -7,7 +7,7 @@
 #' 5) Impute original data with best-performing imputation algorithm
 #'@param mtx Data matrix or input file (.txt, .xls, .xlsx, .csv or .tsv)
 #'@param pattern Search pattern for specifying sample names read in as default data, if not specified the user will be asked
-#'@export dimar
+#'@export dimar dimar
 #' @examples 
 #' Imp <- dimar(mtx)
 #' Imp <- dimar(file)
