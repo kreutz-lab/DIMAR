@@ -13,10 +13,10 @@ dimar <- function(mtx,pattern=NULL) {
 if (is.character(mtx)) {
   file <- mtx
   ext <- strsplit(basename(file), split="\\.")[[1]][-1]
-  if (ext=='tsv'){
-    mtx <- read.table(file='metabolomics.tsv',header=T)
+  if (ext=='tsv' || ext=='xls'|| ext=='xlsx'){
+    mtx <- read.table(file,header=T,sep="\t")
   } else if (ext=='csv'){
-    mtx <- read.csv(filename, allowEscapes = TRUE, check.names = FALSE,sep = "\t")
+    mtx <- read.csv(file, allowEscapes = TRUE, check.names = FALSE,sep = "\t")
   } else if (ext=='txt'){
     mtx <- read.delim(file)
   } else {
