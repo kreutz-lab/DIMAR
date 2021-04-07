@@ -1,13 +1,8 @@
 #' dimar
 #' @description DIMAR: Data-driven selection of an imputation algorithm in R
-#' 1) Learn pattern of missing values
-#' 2) Define reference data R with fewer MVs
-#' 3) Generate patterns of missing values to R
-#' 4) Apply multiple imputation algorithms
-#' 5) Impute original data with best-performing imputation algorithm
-#'@param mtx Data matrix or input file (.txt, .xls, .xlsx, .csv or .tsv)
-#'@param pattern Search pattern for specifying sample names read in as default data, if not specified the user will be asked
-#'@export dimar dimar
+#' @param mtx Data matrix or input file (.txt, .xls, .xlsx, .csv or .tsv)
+#' @param pattern Search pattern for specifying sample names read in as default data, if not specified the user will be asked
+#' @export dimar dimar
 #' @examples 
 #' Imp <- dimar(mtx)
 #' Imp <- dimar(file)

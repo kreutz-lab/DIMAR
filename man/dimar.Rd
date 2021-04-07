@@ -2,7 +2,7 @@
 % Please edit documentation in R/dimar.R
 \name{dimar}
 \alias{dimar}
-\title{DIMA: Data-driven selection of an imputation algorithm (Egert et al.)}
+\title{dimar}
 \usage{
 dimar(mtx, pattern = NULL)
 }
@@ -12,11 +12,7 @@ dimar(mtx, pattern = NULL)
 \item{pattern}{Search pattern for specifying sample names read in as default data, if not specified the user will be asked}
 }
 \description{
-- Learn pattern of missing values
-- Define reference data R with fewer MVs
-- Generate patterns of missing values to R
-- Apply multiple imputation algorithms
-- Impute original data with best-performing imp. algorithm
+DIMAR: Data-driven selection of an imputation algorithm in R
 }
 \examples{
 Imp <- dimar(mtx)
