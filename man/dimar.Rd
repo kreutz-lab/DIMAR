@@ -4,7 +4,7 @@
 \alias{dimar}
 \title{dimar}
 \usage{
-dimar(mtx, pattern = NULL)
+dimar(mtx, pattern = "^Int")
 }
 \arguments{
 \item{mtx}{Data matrix or input file (.txt, .xls, .xlsx, .csv or .tsv)}
