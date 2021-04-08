@@ -4,7 +4,7 @@
 \alias{dimarAssignPattern}
 \title{dimarAssignPattern}
 \usage{
-dimarAssignPattern(ref, coef, mtx = NULL, npat = 0)
+dimarAssignPattern(ref, coef, mtx = NULL, npat = NULL)
 }
 \arguments{
 \item{ref}{Reference dataset}
