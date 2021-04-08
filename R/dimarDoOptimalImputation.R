@@ -7,9 +7,9 @@
 #' @param lib R package of imputation method
 #' @export dimarDoOptimalImputation
 #' @examples 
-#' Imputations <- dimarDoImputations(mtx)
-#' Performance <- dimarEvaluatePerformance(Imputations, ref, mtx)
-#' Imp <- dimarDoOptimalImputation(mtx, rownames(Performance))
+#' mtx <- matrix(rnorm(1000),nrow=100)
+#' mtx[sample(c(1:1000),100)] <- NA
+#' Imp <- dimarDoOptimalImputation(mtx, 'impSeq')
 
 dimarDoOptimalImputation <- function(mtx, method, lib=NULL) {
 m <- 0

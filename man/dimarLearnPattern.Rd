@@ -16,5 +16,7 @@ Logistic regression coefficients describing missing value pattern
 Learns missing value occurence pattern from quantitative matrix by a logistic regression model
 }
 \examples{
+#' mtx <- matrix(rnorm(1000),nrow=100)
+mtx[sample(c(1:1000),100)] <- NA
 coef <- dimarLearnPattern(mtx)
 }

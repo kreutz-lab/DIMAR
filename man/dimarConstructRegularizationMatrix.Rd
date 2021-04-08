@@ -16,6 +16,9 @@ list of response vector, design matrix with regularization and predictor type
 Generates regularization matrix: Expand the design matrix so each predictor has at least one positive entry, this exhibits the regression coefficients to get infinite
 }
 \examples{
+mtx <- matrix(rnorm(1000),nrow=100)
+mtx[sample(c(1:1000),100)] <- NA
 design <- dimarConstructDesignMatrix(mtx)
 design <- dimarConstructRegularizationMatrix(design)
+fit <- glm.fit(design$X, design$y, family=binomial())
 }

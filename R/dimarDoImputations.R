@@ -8,6 +8,8 @@
 #' @param lib R packages of imputation methods (to be loaded in parallel loop 'foreach')
 #' @export dimarDoImputations
 #' @examples
+#' mtx <- matrix(rnorm(1000),nrow=100)
+#' mtx[sample(c(1:1000),100)] <- NA
 #' Imputations <- dimarDoImputations(mtx, c('impSeqRob', 'ppca', 'imputePCA'))
 
 dimarDoImputations <- function(mtx, method=NULL, lib=NULL) {

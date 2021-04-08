@@ -35,5 +35,11 @@ of RMSEttest=TRUE the RMSE t-test result
 Evaluates performance of imputation algorithms.
 }
 \examples{
+mtx <- matrix(rnorm(1000),nrow=100)
+mtx[sample(c(1:1000),100)] <- NA
+coef <- dimarLearnPattern(mtx)
+ref <- dimarConstructReferenceData(mtx)
+sim <- dimarAssignPattern(ref, coef, mtx)
+Imputations <- dimarDoImputations(sim, c('impSeqRob', 'ppca', 'imputePCA'))
 Performance <- dimarEvaluatePerformance(Imputations, ref, sim)
 }

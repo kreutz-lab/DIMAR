@@ -8,6 +8,8 @@
 #' @param lib R package of imputation method
 #' @export dimarDoImputationsR
 #' @examples
+#' mtx <- matrix(rnorm(1000),nrow=100)
+#' mtx[sample(c(1:1000),100)] <- NA
 #' I <- dimarDoImputationsR(mtx,'impSeq','rrcovNA')
 
 dimarDoImputationsR <- function(mtx, method=NULL, lib=NULL) {

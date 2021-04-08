@@ -22,6 +22,8 @@ Reference dataset with applied pattern
 Assigns patterns of MVs to reference data set with a logistic regression model
 }
 \examples{
+mtx <- matrix(rnorm(1000),nrow=100)
+mtx[sample(c(1:1000),100)] <- NA
 coef <- dimarLearnPattern(mtx)
 ref <- dimarConstructReferenceData(mtx)
 sim <- dimarAssignPattern(ref, coef, mtx)

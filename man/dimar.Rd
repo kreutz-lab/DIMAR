@@ -10,6 +10,8 @@ dimar(mtx, pattern = "^Int", group = "cluster")
 \item{mtx}{Data matrix or input file (.txt, .xls, .xlsx, .csv or .tsv)}
 
 \item{pattern}{Search pattern for specifying sample names read in as default data, if not specified the user will be asked}
+
+\item{group}{vector of group indices for ttest (group==1 vs group==2) ['cluster'] as a default, clustering with 2 cluster is performed}
 }
 \description{
 DIMAR: Data-driven selection of an imputation algorithm in R
@@ -20,4 +22,6 @@ mtx[sample(c(1:1000),100)] <- NA
 Imp <- dimar(mtx)
 
 Imp <- dimar('proteinGroups.txt','LFQ')
+
+Imp <- dimar('proteinGroups_PXD008893.txt','Intensity',c('PKB','PKC')))
 }

@@ -17,5 +17,12 @@ dimarMatrixPreparation(mtx, nacut = 2, logflag = "auto")
 Prepare/Filter matrix
 }
 \examples{
-mtx <- dimarMatrixPreparation(mtx)
+mtx <- matrix(rnorm(1000),nrow=100)
+mtx[sample(c(1:1000),100)] <- NA
+mtx <- dimarMatrixPreparation(mtx,nacut=0,logflag=FALSE)
+
+mtx <- matrix(10^(rnorm(1000,7)),nrow=100)
+mtx[sample(c(1:1000),100)] <- NA
+mtx <- dimarMatrixPreparation(mtx,nacut=0.8,logflag=TRUE)
+
 }

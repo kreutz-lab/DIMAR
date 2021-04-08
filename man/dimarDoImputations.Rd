@@ -20,5 +20,7 @@ Imputed data set(s)
 Performs imputations
 }
 \examples{
+mtx <- matrix(rnorm(1000),nrow=100)
+mtx[sample(c(1:1000),100)] <- NA
 Imputations <- dimarDoImputations(mtx, c('impSeqRob', 'ppca', 'imputePCA'))
 }

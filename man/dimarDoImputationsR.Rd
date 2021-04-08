@@ -21,5 +21,7 @@ Helper function for DoImputations. Actually applies the imputation functions
 of various R packages to a quantitative matrix.
 }
 \examples{
+mtx <- matrix(rnorm(1000),nrow=100)
+mtx[sample(c(1:1000),100)] <- NA
 I <- dimarDoImputationsR(mtx,'impSeq','rrcovNA')
 }

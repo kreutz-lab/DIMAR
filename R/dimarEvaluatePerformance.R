@@ -12,6 +12,12 @@
 #' @param group indices for ttest
 #' @export dimarEvaluatePerformance dimarEvaluatePerformance
 #' @examples 
+#' mtx <- matrix(rnorm(1000),nrow=100)
+#' mtx[sample(c(1:1000),100)] <- NA
+#' coef <- dimarLearnPattern(mtx)
+#' ref <- dimarConstructReferenceData(mtx)
+#' sim <- dimarAssignPattern(ref, coef, mtx)
+#' Imputations <- dimarDoImputations(sim, c('impSeqRob', 'ppca', 'imputePCA'))
 #' Performance <- dimarEvaluatePerformance(Imputations, ref, sim)
 
 dimarEvaluatePerformance <- function(Imputations, ref, sim, rankby='RMSE', RMSEttest=TRUE, group='cluster') {
@@ -27,7 +33,7 @@ dimarEvaluatePerformance <- function(Imputations, ref, sim, rankby='RMSE', RMSEt
   RMSEt <- Dev
   ttest<-NULL
   ttesti <- NULL
-  if (group=='cluster' | is.null(group)) {
+  if (group[1]=='cluster' | is.null(group)) {
     require(amap)
     h <- hcluster(t(ref))
     group <- cutree(h,k=2)

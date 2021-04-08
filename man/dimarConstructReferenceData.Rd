@@ -18,6 +18,8 @@ Reference dataset
 Constructs reference dataset: Take data with least #MVs, enlarge data by proteins with least #MVs and normalize to all proteins
 }
 \examples{
+mtx <- matrix(rnorm(1000),nrow=100)
+mtx[sample(c(1:1000),100)] <- NA
 coef <- dimarLearnPattern(mtx)
 ref <- dimarConstructReferenceData(mtx)
 sim <- dimarAssignPattern(ref, coef, mtx)

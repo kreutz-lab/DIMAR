@@ -16,10 +16,14 @@ list of response vector, design matrix and vector of predictor type
 Constructs design matrix with the factorial row/col predictors and the mean intensity
 }
 \examples{
+mtx <- matrix(rnorm(1000),nrow=100)
+mtx[sample(c(1:1000),100)] <- NA
 design <- dimarConstructDesignMatrix(mtx)
 design <- dimarConstructRegularizationMatrix(design)
 fit <- glm.fit(design$X, design$y, family=binomial())
 
+mtx <- matrix(rnorm(1000),nrow=100)
+mtx[sample(c(1:1000),100)] <- NA
 design <- dimarConstructDesignMatrix(mtx)
-yhat <- exp(X$X\%\%coef)/(1+exp(X$X\%*\%coef))
+yhat <- exp(X$X\%*\%coef)/(1+exp(X$X\%*\%coef))
 }

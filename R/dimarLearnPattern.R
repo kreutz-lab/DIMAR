@@ -5,6 +5,8 @@
 #' @param mtx Quantitative matrix
 #' @export dimarLearnPattern
 #' @examples 
+#' #' mtx <- matrix(rnorm(1000),nrow=100)
+#' mtx[sample(c(1:1000),100)] <- NA
 #' coef <- dimarLearnPattern(mtx)
 
 dimarLearnPattern <- function(mtx) {

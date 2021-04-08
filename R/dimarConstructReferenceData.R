@@ -6,6 +6,8 @@
 #' @param cut minimum number of proteins kept for the reference data
 #' @export dimarConstructReferenceData
 #' @examples
+#' mtx <- matrix(rnorm(1000),nrow=100)
+#' mtx[sample(c(1:1000),100)] <- NA
 #' coef <- dimarLearnPattern(mtx)
 #' ref <- dimarConstructReferenceData(mtx)
 #' sim <- dimarAssignPattern(ref, coef, mtx)

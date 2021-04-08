@@ -5,8 +5,11 @@
 #' @param design list of response vector, design matrix and predictor type
 #' @export dimarConstructRegularizationMatrix
 #' @examples 
+#' mtx <- matrix(rnorm(1000),nrow=100)
+#' mtx[sample(c(1:1000),100)] <- NA
 #' design <- dimarConstructDesignMatrix(mtx)
 #' design <- dimarConstructRegularizationMatrix(design)
+#' fit <- glm.fit(design$X, design$y, family=binomial())
 
 dimarConstructRegularizationMatrix <- function(design) {
   nrest <- sum(design$Xtype!=3 & design$Xtype!=2)
