@@ -22,7 +22,7 @@ devtools::install_github("kreutz-lab/DIMAR")
 # Examples:
 DIMA can take a numeric matrix or the file path to a MAxQuant ProteinGroups file as an input.
 
-MaxQuant file path as input (example taken from (Reimann et al. (2020))):
+MaxQuant file path as input (Example taken from (Reimann et al. (2020))):
 ```
 library(DIMAR)
 filename <- "proteinGroups_PXD008893.txt"
