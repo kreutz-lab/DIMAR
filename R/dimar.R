@@ -40,6 +40,6 @@ Imputations <- dimarDoImputations(sim, c('impSeqRob', 'ppca', 'imputePCA'))
 Performance <- dimarEvaluatePerformance(Imputations, ref, sim, 'RMSE', TRUE)
 Imp <- dimarDoOptimalImputation(mtx, rownames(Performance))
 
-write.csv(Imp, file=paste0("Imp_", file))
+write.csv(Imp, file=file.path(dirname(file),paste0("Imp_",basename(file))))
 return(Imp)
 }
