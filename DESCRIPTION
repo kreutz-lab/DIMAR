@@ -1,5 +1,5 @@
 Package: DIMAR
-Version: 0.4.2
+Version: 0.4.3
 Title: Data-driven selection of an imputation algorithm in R
 Authors@R: c(person("Janine", "Egert",
   email = "egert@imbi.uni-freiburg.de",

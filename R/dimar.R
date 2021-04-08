@@ -8,7 +8,7 @@
 #' @param group vector of group indices for ttest (group==1 vs group==2) ['cluster'] as a default, clustering with 2 cluster is performed
 #' @export dimar dimar
 #' @examples
-#' mtx <- matrix(rnorm(1000),nrow=100)
+#' mtx <- matrix(rnorm(1000), nrow=100)
 #' mtx[sample(c(1:1000),100)] <- NA
 #' Imp <- dimar(mtx)
 #' Imp <- dimar('mtx = proteinGroups.txt', pattern = 'LFQ')
@@ -31,7 +31,7 @@ dimar <- function(mtx, pattern = NULL, methods = 'fast', npat = NULL, group = 'c
     mtx <- as.matrix(mtx[, grepl(pattern, names(mtx))])
     print(paste("Data is reduced to columns which include",pattern,"in their sample names."))
   }
-  if (!group == 'cluster') {
+  if (!group[1] == 'cluster') {
     groupidx <- rep(0L,ncol(mtx))
     groupidx[grepl(group[1],colnames(mtx))] <- 1
     groupidx[grepl(group[2],colnames(mtx))] <- 2

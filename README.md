@@ -27,7 +27,7 @@ MaxQuant file path as input (Example taken from (Reimann et al. (2020))):
 library(DIMAR)
 filename <- "proteinGroups_PXD008893.txt"
 filepath <- system.file("extdata", filename, package = "DIMAR")
-Imp <- DIMAR::dimar(mtx = filepath, pattern = 'Intensity', group = c('PKB','PKC')
+Imp <- DIMAR::dimar(mtx = filepath, pattern = 'Intensity', group = c('PKB','PKC'))
 ```
 
 Matrix as input (Example taken from Khoonsari, Payam Emami, et al. "Analysis of the cerebrospinal fluid proteome in Alzheimer's disease." PloS one 11.3 (2016): e0150672.): 

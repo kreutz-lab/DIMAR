@@ -56,7 +56,7 @@ dimarMatrixPreparation <- function(mtx, nacut = 2, logflag = 'auto'){
     message(paste("Number of proteins with empty entries:",
         length(which(allColNA))))
 
-    mtx <- `dimnames<-`(`dim <-`(as.numeric(mtx), dim(mtx)), dimnames(mtx))
+    mtx <- `dimnames<-`(`dim<-`(as.numeric(mtx), dim(mtx)), dimnames(mtx))
 
     return(mtx)
 }
