@@ -17,8 +17,6 @@
 
 dimarMatrixPreparation <- function(mtx, nacut = 2, logflag = 'auto'){
 
-    row.names(mtx) <- mtx[, "Protein IDs"]
-
     # if no NA: 0 -> NA
     mtx[mtx == "NaN"] <- NA
     if (sum(is.na(mtx)) == 0) {

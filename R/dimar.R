@@ -20,6 +20,7 @@ dimar <- function(mtx, pattern = NULL, methods = 'fast', npat = NULL, group = 'c
     file <- mtx
     ext <- strsplit(basename(file), split = "\\.")[[1]][-1]
     mtx <- read.table(file, header = T, sep = "\t", allowEscapes = TRUE, check.names = FALSE)
+    row.names(mtx) <- mtx[, "Protein IDs"]
   } else {
     file <- NULL
   }
