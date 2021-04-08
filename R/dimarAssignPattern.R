@@ -14,8 +14,8 @@
 #' ref <- dimarConstructReferenceData(mtx)
 #' sim <- dimarAssignPattern(ref, coef, mtx)
 
-dimarAssignPattern <- function(ref, coef, mtx=NULL, npat=0) {
-  if (npat == 0){
+dimarAssignPattern <- function(ref, coef, mtx=NULL, npat<-NULL) {
+  if (is.null(npat)){
     if (dim(ref)[1]*dim(ref)[2]<50000) {
       npat <- 20
     } else if (dim(ref)[1]*dim(ref)[2]<100000){

@@ -15,7 +15,7 @@
 #' 
 #' Imp <- dimar('proteinGroups_PXD008893.txt','Intensity',c('PKB','PKC')))
 
-dimar <- function(mtx,pattern="^Int",methods='fast',npat=NULL,group='cluster') {
+dimar <- function(mtx,pattern="^Int",methods='fast',npat<-NULL,group='cluster') {
 
 if (is.character(mtx)) {
   file <- mtx
