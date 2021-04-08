@@ -13,21 +13,14 @@ dimar <- function(mtx,pattern="^Int") {
 if (is.character(mtx)) {
   file <- mtx
   ext <- strsplit(basename(file), split="\\.")[[1]][-1]
-  if (ext=='tsv' || ext=='xls'|| ext=='xlsx'){
-    mtx <- read.table(file,header=T,sep="\t")
-  } else if (ext=='csv'){
-    mtx <- read.csv(file, allowEscapes = TRUE, check.names = FALSE,sep = "\t")
-  } else if (ext=='txt'){
-    mtx <- read.delim(file)
-  } else {
-    warning('Input file extension unknown. Expand code here or check input.')
-  }
+  mtx <- read.table(file,header=T,sep="\t", allowEscapes = TRUE, check.names = FALSE)
 } else { filename <- {} }
 if (class(mtx) == 'SingleCellExperiment' || class(mtx) == 'SummarizedExperiment') {
   mtx <- as.matrix(assay(mtx))
 }
 if (is.character(pattern)) {
   mtx <- as.matrix(mtx[, grepl(pattern, names(mtx))])
+  print(paste("Data is reduced to columns which include",pattern,"in their sample names."))
 }
 
 mtx <- dimarMatrixPreparation(mtx)
@@ -40,6 +33,7 @@ Imputations <- dimarDoImputations(sim, c('impSeqRob', 'ppca', 'imputePCA'))
 Performance <- dimarEvaluatePerformance(Imputations, ref, sim, 'RMSE', TRUE)
 Imp <- dimarDoOptimalImputation(mtx, rownames(Performance))
 
-write.csv(Imp, file=file.path(dirname(file),paste0("Imp_",basename(file))))
+write.table(Imp, file=file.path(dirname(file),paste0("Imp_",basename(file))),sep="\t")
+print(paste('Imputation is written in',file.path(dirname(file),paste0("Imp_",basename(file))))
 return(Imp)
 }

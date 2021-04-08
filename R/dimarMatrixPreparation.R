@@ -14,6 +14,7 @@ dimarMatrixPreparation <- function(mtx,nacut=2,logflag='auto'){
     mtx[mtx == "NaN"] <- NA
     if (sum(is.na(mtx))==0) {
         mtx[mtx == 0] <- NA
+        print("Replaced 0 by NA.")
     }
     if (sum(is.na(mtx))==0) {
         print('No MVs in your dataset.')
@@ -32,8 +33,10 @@ dimarMatrixPreparation <- function(mtx,nacut=2,logflag='auto'){
     # Nacut
     if (nacut>=0 && nacut<1) {
         mtx = mtx[rowSums(!is.na(mtx))>nacut*dim(mtx)[2],]
+        print(paste("Features with less than",nacut," percent of data points are removed."))
     } else if (nacut>=1){
         mtx = mtx[rowSums(!is.na(mtx))>nacut,]
+        print(paste("Features with less than",nacut,"data points are removed."))
     } else {
         warning(paste('dimarMatrixPreparation: nacut',nacut,'not known. Expand code here. No transformation is performed.'))
     }

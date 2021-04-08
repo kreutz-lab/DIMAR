@@ -20,7 +20,7 @@ while (is.null(Imp) || any(is.na(Imp))) {
   Imp <- dimarDoImputationsR(mtx, method[m], dimarGetLib(method[m]))
 }
 Imp <- as.matrix(Imp[, 1:dim(mtx)[2]])
-print(paste('Imputation with', method[m], 'done.'))
+print(paste('Imputation of input data with algorithm', method[m], 'is performed.'))
 return(Imp)
 }
 
