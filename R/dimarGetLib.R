@@ -43,7 +43,9 @@ dimarGetLib <- function(method) {
     lib <- 'DMwR'
   } else if (method == 'GMSimpute' || method == 'GMSLasso') {
     lib <- 'GMSimpute'
-  } if (!exists('lib')) {
+  }
+
+  if (!exists('lib')) {
     warning(paste('dimarGetLib.R:',method,'is not implemented in DIMA and ignored for imputation. Check your spelling, or add respective Rcode to DoImputationsR.R and its library to GetLib.R.'))
   }
 return(lib)

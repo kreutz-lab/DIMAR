@@ -1,4 +1,5 @@
 #' dimar
+#'
 #' @description DIMAR: Data-driven selection of an imputation algorithm in R
 #' @param mtx Data matrix or MaxQuant input file ('.txt')
 #' @param pattern Search pattern for specifying sample names read in as default data, if not specified the user will be asked
@@ -10,10 +11,8 @@
 #' mtx <- matrix(rnorm(1000),nrow=100)
 #' mtx[sample(c(1:1000),100)] <- NA
 #' Imp <- dimar(mtx)
-#'
-#' Imp <- dimar('proteinGroups.txt','LFQ')
-#'
-#' Imp <- dimar('proteinGroups_PXD008893.txt','Intensity',c('PKB','PKC')))
+#' Imp <- dimar('mtx = proteinGroups.txt', pattern = 'LFQ')
+#' Imp <- dimar(mtx = 'proteinGroups_PXD008893.txt', pattern = 'Intensity', group = c('PKB','PKC')))
 
 dimar <- function(mtx, pattern = NULL, methods = 'fast', npat = NULL, group = 'cluster') {
 

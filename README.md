@@ -22,7 +22,7 @@ devtools::install_github("kreutz-lab/DIMAR")
 # Examples:
 DIMA can take a numeric matrix or the file path to a MAxQuant ProteinGroups file as an input.
 
-MaxQuant file path (Reimann et al. (2020)):
+MaxQuant file path as input (example taken from (Reimann et al. (2020))):
 ```
 library(DIMAR)
 filename <- "proteinGroups_PXD008893.txt"
@@ -30,7 +30,7 @@ filepath <- system.file("extdata", filename, package = "DIMAR")
 Imp <- DIMAR::dimar(mtx = filepath, pattern = 'Intensity', group = c('PKB','PKC')
 ```
 
-Matrix: 
+Matrix as input (Example taken from Khoonsari, Payam Emami, et al. "Analysis of the cerebrospinal fluid proteome in Alzheimer's disease." PloS one 11.3 (2016): e0150672.): 
 
 ```
 library(DIMAR)
@@ -42,5 +42,5 @@ row.names(df) <- paste(c(1:nrow(df)), df$`Protein.(Uniprot.ID)`, sep = "_")
 mtx <- as.matrix(df[, grepl("^AD\\d|^C\\d", names(df))])
 # Dataset reduced for demonstration purposes
 mtx <- mtx[1:400,]
-Imp2 <- DIMAR::dimar(mtx, pattern = NULL)
+Imp2 <- DIMAR::dimar(mtx = mtx, pattern = NULL)
 ```

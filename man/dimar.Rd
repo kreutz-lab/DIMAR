@@ -4,7 +4,7 @@
 \alias{dimar}
 \title{dimar}
 \usage{
-dimar(mtx, pattern = "^Int", methods = "fast", npat = NULL, group = "cluster")
+dimar(mtx, pattern = NULL, methods = "fast", npat = NULL, group = "cluster")
 }
 \arguments{
 \item{mtx}{Data matrix or MaxQuant input file ('.txt')}
