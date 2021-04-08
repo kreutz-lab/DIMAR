@@ -4,7 +4,7 @@
 \alias{dimar}
 \title{dimar}
 \usage{
-dimar(mtx, pattern = "^Int")
+dimar(mtx, pattern = "^Int", group = "cluster")
 }
 \arguments{
 \item{mtx}{Data matrix or input file (.txt, .xls, .xlsx, .csv or .tsv)}
@@ -15,7 +15,9 @@ dimar(mtx, pattern = "^Int")
 DIMAR: Data-driven selection of an imputation algorithm in R
 }
 \examples{
+mtx <- matrix(rnorm(1000),nrow=100)
+mtx[sample(c(1:1000),100)] <- NA
 Imp <- dimar(mtx)
-Imp <- dimar(file)
+
 Imp <- dimar('proteinGroups.txt','LFQ')
 }
