@@ -25,5 +25,5 @@ MaxQuant example: DIMA applied to Reimann et al. (2020):
 library(DIMAR)
 filename <- "proteinGroups_PXD008893.txt"
 filepath <- system.file("extdata", filename, package = "DIMAR")
-Imp <- DIMAR::dimar(filepath)
+Imp <- DIMAR::dimar(filepath,pattern='Intensity',group=c('PKB','PKC')
 ```
