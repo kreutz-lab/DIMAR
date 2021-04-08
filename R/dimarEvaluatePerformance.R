@@ -11,7 +11,7 @@
 #' @param RMSEttest flag if RMSE of ttest should be calculated
 #' @param group indices for ttest
 #' @export dimarEvaluatePerformance dimarEvaluatePerformance
-#' @examples 
+#' @examples
 #' mtx <- matrix(rnorm(1000),nrow=100)
 #' mtx[sample(c(1:1000),100)] <- NA
 #' coef <- dimarLearnPattern(mtx)
@@ -20,7 +20,8 @@
 #' Imputations <- dimarDoImputations(sim, c('impSeqRob', 'ppca', 'imputePCA'))
 #' Performance <- dimarEvaluatePerformance(Imputations, ref, sim)
 
-dimarEvaluatePerformance <- function(Imputations, ref, sim, rankby='RMSE', RMSEttest=TRUE, group='cluster') {
+dimarEvaluatePerformance <- function(Imputations, ref, sim, rankby = 'RMSE',
+                                     RMSEttest = TRUE, group = 'cluster') {
   # Initialize performance arrays
   Dev <- array(NA, c(dim(Imputations[[1]])[3], length(Imputations)))
   RMSE <- Dev
@@ -31,19 +32,19 @@ dimarEvaluatePerformance <- function(Imputations, ref, sim, rankby='RMSE', RMSEt
   rank <- Dev
   if (RMSEttest) {
   RMSEt <- Dev
-  ttest<-NULL
+  ttest <- NULL
   ttesti <- NULL
-  if (group[1]=='cluster' | is.null(group)) {
+  if (group[1] == 'cluster' | is.null(group)) {
     require(amap)
     h <- hcluster(t(ref))
-    group <- cutree(h,k=2)
+    group <- cutree(h, k = 2)
   }
   }
 
   for (p in 1:dim(Imputations[[1]])[3]) { # loop over #patterns
     if (RMSEttest) {
       for (t in 1:dim(ref)[1]) {
-        htest = t.test(ref[t, group==1], ref[t,group==2])
+        htest = t.test(ref[t, group == 1], ref[t, group == 2])
         ttest[t] <- htest$statistic
       }
       ttest[!is.finite(ttest)] <- NULL
@@ -52,34 +53,34 @@ dimarEvaluatePerformance <- function(Imputations, ref, sim, rankby='RMSE', RMSEt
       im <- Imputations[[a]][, , p]
       if (!any(is.na(im))) {
           ndata = sum(is.na(sim[, , p]) & !is.na(ref))
-          Diff <- im-ref
-          Dev[p,a] <- sum(abs(Diff), na.rm=T)/ndata
-          RMSE[p,a] <- sqrt(sum(Diff^2, na.rm=T)/ndata)
-          RSR[p,a] <- RMSE[p,a]/sd(ref, na.rm=T)
+          Diff <- im - ref
+          Dev[p,a] <- sum(abs(Diff), na.rm = TRUE)/ndata
+          RMSE[p,a] <- sqrt(sum(Diff^2, na.rm = TRUE)/ndata)
+          RSR[p,a] <- RMSE[p,a]/sd(ref, na.rm = TRUE)
           pF[p,a] <- var.test(im,ref)$p.value
           Acc[p,a] <- length(which(abs(Diff/ref) < 0.05))/dim(ref)[1]/dim(ref)[2]*100
           PCC[p,a] <- cor(as.vector(im), as.vector(ref))
-          if (RMSEttest){
+          if (RMSEttest) {
             for (t in 1:dim(ref)[1]) {
-              htesti <- t.test(im[t,group==1], im[t,group==2])
+              htesti <- t.test(im[t,group == 1], im[t,group == 2])
               ttesti[t] <- htesti$statistic
             }
             ttesti[!is.finite(ttesti)] <- NULL
-            RMSEt[p,a] <- sqrt(sum((ttest-ttesti)^2, na.rm=T) /max(length(ttest), length(ttesti)))
+            RMSEt[p,a] <- sqrt(sum((ttest - ttesti)^2, na.rm = TRUE) / max(length(ttest), length(ttesti)))
           }
       }
     }
-    rank[p,] <- eval(parse(text=paste('order(', rankby, '[p,])', sep="")))
+    rank[p,] <- eval(parse(text = paste('order(', rankby, '[p,])', sep = "")))
   }
-  if (p==1){
-  if (RMSEttest){
+  if (p == 1) {
+  if (RMSEttest) {
     Performance <- data.frame(Dev, RMSE, RSR, pF, Acc, PCC, RMSEt)
   } else {
     Performance <- data.frame(Dev, RMSE, RSR, pF, Acc, PCC)
   }
   } else {
   rank <- colMeans(rank)
-  if (RMSEttest){
+  if (RMSEttest) {
     Performance <- data.frame(colMeans(Dev), colMeans(RMSE), colMeans(RSR), colMeans(pF),
                               colMeans(Acc), colMeans(PCC), colMeans(RMSEt))
   } else {
@@ -96,5 +97,5 @@ dimarEvaluatePerformance <- function(Imputations, ref, sim, rankby='RMSE', RMSEt
   colnames(Performance) <- c('Deviation', 'RMSE', 'RSR', 'p-Value_F-test', 'Accuracy',
                              'PCC')
   }
-return(Performance)
+  return(Performance)
 }

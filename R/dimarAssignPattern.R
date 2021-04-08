@@ -14,11 +14,11 @@
 #' ref <- dimarConstructReferenceData(mtx)
 #' sim <- dimarAssignPattern(ref, coef, mtx)
 
-dimarAssignPattern <- function(ref, coef, mtx=NULL, npat=NULL) {
-  if (is.null(npat)){
-    if (dim(ref)[1]*dim(ref)[2]<50000) {
+dimarAssignPattern <- function(ref, coef, mtx = NULL, npat = NULL) {
+  if (is.null(npat)) {
+    if (dim(ref)[1]*dim(ref)[2] < 50000) {
       npat <- 20
-    } else if (dim(ref)[1]*dim(ref)[2]<100000){
+    } else if (dim(ref)[1]*dim(ref)[2] < 100000) {
       npat <- 10
     } else{
       npat <- 5
@@ -28,23 +28,23 @@ dimarAssignPattern <- function(ref, coef, mtx=NULL, npat=NULL) {
   X <- dimarConstructDesignMatrix(ref)
   pat <- array(NA,c(dim(ref),npat))
 
-  for (i in 1:npat){
+  for (i in 1:npat) {
     # probability of MV by logistic regression
-    yhat <- exp(X$X%*%coef)/(1+exp(X$X%*%coef))
-    p <- matrix(yhat,nrow=dim(ref)[1])
+    yhat <- exp(X$X %*% coef)/(1 + exp(X$X %*% coef))
+    p <- matrix(yhat,nrow = dim(ref)[1])
     # binomial draw
-    r <- matrix(runif(length(yhat)),nrow=dim(p)[1])
-    ind <- which(r<p & !is.na(ref),arr.ind=T)
+    r <- matrix(runif(length(yhat)),nrow = dim(p)[1])
+    ind <- which(r < p & !is.na(ref),arr.ind = TRUE)
     # if ref has MV already, #MV = #MV of original mtx
-    if (!is.null(mtx) & dim(ind)[1]>sum(is.na(mtx))) {
+    if (!is.null(mtx) & dim(ind)[1] > sum(is.na(mtx))) {
       ind <- ind[sample(1:length(ind),sum(is.na(mtx))),]
     }
     # Assign NA to ref
     pat1 <- ref
     pat1[ind] <- NA
     # if protein not measured at all, randomly assign one data point
-    if (any(rowSums(is.na(pat1))==dim(pat1)[2])) {
-      allna <- which(rowSums(is.na(pat1))==dim(pat1)[2])
+    if (any(rowSums(is.na(pat1)) == dim(pat1)[2])) {
+      allna <- which(rowSums(is.na(pat1)) == dim(pat1)[2])
       allna <- cbind(allna,sample(1:dim(pat1)[2],length(allna)))
       pat1[allna] <- ref[allna]
     }

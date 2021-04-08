@@ -1,6 +1,6 @@
 #' dimarConstructReferenceData
 #'
-#' @description Constructs reference dataset: Take data with least #MVs, enlarge data by proteins with least #MVs and normalize to all proteins 
+#' @description Constructs reference dataset: Take data with least #MVs, enlarge data by proteins with least #MVs and normalize to all proteins
 #' @return Reference dataset
 #' @param mtx Quantitative matrix
 #' @param cut minimum number of proteins kept for the reference data
@@ -12,11 +12,11 @@
 #' ref <- dimarConstructReferenceData(mtx)
 #' sim <- dimarAssignPattern(ref, coef, mtx)
 
-dimarConstructReferenceData <- function(mtx, cut=0.2) {
-  if (!is.numeric(cut) || cut<0 || cut>100){
-    warning(paste('dimarConstructReferenceData.R: Variable cut =',cut,'is not supported. Check here. Used cut = 0.2 instead.'))
+dimarConstructReferenceData <- function(mtx, cut = 0.2) {
+  if (!is.numeric(cut) || cut < 0 || cut > 100) {
+    warning(paste('dimarConstructReferenceData.R: Variable cut =', cut, 'is not supported. Check here. Used cut = 0.2 instead.'))
   }
-  if (cut>1) {
+  if (cut > 1) {
     cut = cut/100
   }
 
@@ -27,7 +27,7 @@ dimarConstructReferenceData <- function(mtx, cut=0.2) {
   nacut <- nasum[ceiling(dim(mtx)[1]*cut)]
   mtx1 <- mtx[nasum <= nacut,]
   idx1 <- 1:dim(mtx1)[1]
-  idx2 <- (dim(mtx1)[1]+1):dim(mtx)[1]
+  idx2 <- (dim(mtx1)[1] + 1):dim(mtx)[1]
 
   # Take mtx1 multiple times and normalize to protein means/std
   idxnew <- c()
@@ -35,10 +35,13 @@ dimarConstructReferenceData <- function(mtx, cut=0.2) {
     if (length(idxnew) + length(idx1) < length(idx2)) {
       idxnew = c(idxnew, idx1)
     } else {
-      idxnew = c(idxnew, sample(length(idx1), length(idx2)-length(idxnew)))
+      idxnew = c(idxnew, sample(length(idx1), length(idx2) - length(idxnew)))
     }
   }
-  mtx1 <- rbind(mtx1, (mtx[idxnew,]-rowMeans(mtx[idxnew,],na.rm=T)) / matrixStats::rowSds(mtx[idxnew,], na.rm=T) * matrixStats::rowSds(mtx[idx2,], na.rm=T) + rowMeans(mtx[idx2,], na.rm=T) )
+  mtx1 <- rbind(mtx1, (mtx[idxnew,] - rowMeans(mtx[idxnew,], na.rm = TRUE)) /
+                  matrixStats::rowSds(mtx[idxnew,], na.rm = TRUE) *
+                  matrixStats::rowSds(mtx[idx2,], na.rm = TRUE) +
+                  rowMeans(mtx[idx2,], na.rm = TRUE) )
   mtx <- mtx1[order(rowSums(is.na(mtx1))),]
   print('Reference data is constructed.')
   return(mtx)
