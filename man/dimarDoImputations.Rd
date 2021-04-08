@@ -4,7 +4,7 @@
 \alias{dimarDoImputations}
 \title{dimarDoImputations}
 \usage{
-dimarDoImputations(mtx, method = NULL, lib = NULL)
+dimarDoImputations(mtx, method = "fast", lib = NULL)
 }
 \arguments{
 \item{mtx}{Quantitative matrix}

@@ -4,12 +4,16 @@
 \alias{dimar}
 \title{dimar}
 \usage{
-dimar(mtx, pattern = "^Int", group = "cluster")
+dimar(mtx, pattern = "^Int", methods = "fast", npat = NULL, group = "cluster")
 }
 \arguments{
 \item{mtx}{Data matrix or MaxQuant input file ('.txt')}
 
 \item{pattern}{Search pattern for specifying sample names read in as default data, if not specified the user will be asked}
+
+\item{methods}{List of imputation algorithms ['fast'] uses the nine most selected algorithms}
+
+\item{npat}{Number of patterns of MVs to be simulated and to test the algorithms on [5/10/20 depending on the size of the data]}
 
 \item{group}{vector of group indices for ttest (group==1 vs group==2) ['cluster'] as a default, clustering with 2 cluster is performed}
 }

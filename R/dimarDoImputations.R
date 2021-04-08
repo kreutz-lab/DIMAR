@@ -12,7 +12,7 @@
 #' mtx[sample(c(1:1000),100)] <- NA
 #' Imputations <- dimarDoImputations(mtx, c('impSeqRob', 'ppca', 'imputePCA'))
 
-dimarDoImputations <- function(mtx, method=NULL, lib=NULL) {
+dimarDoImputations <- function(mtx, method='fast', lib=NULL) {
   # Assign imputation methods
   if (is.null(method)) {
     method <- c('impSeqRob','impSeq','missForest','imputePCA','ppca','MIPCA','bpca','SVDImpute','kNNImpute','regression','aregImpute','softImpute','MinDet','amelia','SVTImpute','irmi','knn','QRILC','nipals','MinProb','rf','sample','pmm','svdImpute','norm','cart','midastouch','mean','ri')

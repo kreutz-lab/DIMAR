@@ -2,6 +2,8 @@
 #' @description DIMAR: Data-driven selection of an imputation algorithm in R
 #' @param mtx Data matrix or MaxQuant input file ('.txt')
 #' @param pattern Search pattern for specifying sample names read in as default data, if not specified the user will be asked
+#' @param methods List of imputation algorithms ['fast'] uses the nine most selected algorithms
+#' @param npat Number of patterns of MVs to be simulated and to test the algorithms on [5/10/20 depending on the size of the data]
 #' @param group vector of group indices for ttest (group==1 vs group==2) ['cluster'] as a default, clustering with 2 cluster is performed
 #' @export dimar dimar
 #' @examples 
@@ -13,7 +15,7 @@
 #' 
 #' Imp <- dimar('proteinGroups_PXD008893.txt','Intensity',c('PKB','PKC')))
 
-dimar <- function(mtx,pattern="^Int",group='cluster') {
+dimar <- function(mtx,pattern="^Int",methods='fast',npat=NULL,group='cluster') {
 
 if (is.character(mtx)) {
   file <- mtx
@@ -37,9 +39,9 @@ mtx <- dimarMatrixPreparation(mtx)
 
 coef <- dimarLearnPattern(mtx)
 ref <- dimarConstructReferenceData(mtx)
-sim <- dimarAssignPattern(ref, coef, mtx)
+sim <- dimarAssignPattern(ref, coef, mtx, npat)
 
-Imputations <- dimarDoImputations(sim, c('impSeqRob', 'ppca', 'imputePCA'))
+Imputations <- dimarDoImputations(sim, methods)
 Performance <- dimarEvaluatePerformance(Imputations, ref, sim, 'RMSE', TRUE, group)
 Imp <- dimarDoOptimalImputation(mtx, rownames(Performance))
 
