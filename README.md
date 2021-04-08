@@ -23,14 +23,5 @@ Example usage of package:
 library(DIMAR)
 filename <- "TestData.txt"
 filepath <- system.file("extdata", filename, package = "DIMAR")
-mtx <- dimarReadInMaxQuant(filepath)
-
-coef <- dimarLearnPattern(mtx)
-ref <- dimarConstructReferenceData(mtx)
-sim <- dimarAssignPattern(ref, coef, mtx)
-
-Imputations <- dimarDoImputations(sim, c('impSeqRob', 'ppca', 'imputePCA'))
-Performance <- dimarEvaluatePerformance(Imputations, ref, sim, 'RMSE', TRUE)
-Imp <- dimarDoOptimalImputation(mtx, rownames(Performance))
-write.csv(Imp, file=paste0("Imp_", filename))
+Imp <- DIMAR::dimar(filepath)
 ```
