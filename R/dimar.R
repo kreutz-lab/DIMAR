@@ -34,6 +34,6 @@ Performance <- dimarEvaluatePerformance(Imputations, ref, sim, 'RMSE', TRUE)
 Imp <- dimarDoOptimalImputation(mtx, rownames(Performance))
 
 write.table(Imp, file=file.path(dirname(file),paste0("Imp_",basename(file))),sep="\t")
-print(paste('Imputation is written in',file.path(dirname(file),paste0("Imp_",basename(file))))
+print(paste('Imputation is written in',file.path(dirname(file),paste0("Imp_",basename(file)))))
 return(Imp)
 }
