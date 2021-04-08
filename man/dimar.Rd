@@ -7,7 +7,7 @@
 dimar(mtx, pattern = "^Int", group = "cluster")
 }
 \arguments{
-\item{mtx}{Data matrix or input file (.txt, .xls, .xlsx, .csv or .tsv)}
+\item{mtx}{Data matrix or MaxQuant input file ('.txt')}
 
 \item{pattern}{Search pattern for specifying sample names read in as default data, if not specified the user will be asked}
 

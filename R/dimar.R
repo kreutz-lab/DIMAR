@@ -1,6 +1,6 @@
 #' dimar
 #' @description DIMAR: Data-driven selection of an imputation algorithm in R
-#' @param mtx Data matrix or input file (.txt, .xls, .xlsx, .csv or .tsv)
+#' @param mtx Data matrix or MaxQuant input file ('.txt')
 #' @param pattern Search pattern for specifying sample names read in as default data, if not specified the user will be asked
 #' @param group vector of group indices for ttest (group==1 vs group==2) ['cluster'] as a default, clustering with 2 cluster is performed
 #' @export dimar dimar
