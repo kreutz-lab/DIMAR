@@ -18,10 +18,12 @@ install.packages("devtools")
 devtools::install_github("kreutz-lab/DIMAR")
 ```
 
-Example usage of package:
+# Examples:
+
+MaxQuant example: DIMA applied to Reimann et al. (2020):
 ```
 library(DIMAR)
-filename <- "TestData.txt"
+filename <- "proteinGroups_PXD008893.txt"
 filepath <- system.file("extdata", filename, package = "DIMAR")
 Imp <- DIMAR::dimar(filepath)
 ```
