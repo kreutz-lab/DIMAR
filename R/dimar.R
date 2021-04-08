@@ -43,7 +43,7 @@ Imputations <- dimarDoImputations(sim, c('impSeqRob', 'ppca', 'imputePCA'))
 Performance <- dimarEvaluatePerformance(Imputations, ref, sim, 'RMSE', TRUE, group)
 Imp <- dimarDoOptimalImputation(mtx, rownames(Performance))
 
-if (exist("file")) {  # if file name is given, the imputed matrix is written into file
+if (exists("file")) {  # if file name is given, the imputed matrix is written into file
   write.table(Imp, file=file.path(dirname(file),paste0("Imp_",basename(file))),sep="\t")
   print(paste('Imputation is written in',file.path(dirname(file),paste0("Imp_",basename(file)))))
 }
