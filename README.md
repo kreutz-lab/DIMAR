@@ -19,10 +19,20 @@ devtools::install_github("kreutz-lab/DIMAR")
 ```
 
 
-# Examples:
-DIMA can take a numeric matrix or the file path to a MaxQuant ProteinGroups file as an input.
+# Examples
 
-Matrix as input (Example taken from Khoonsari, Payam Emami, et al. "Analysis of the cerebrospinal fluid proteome in Alzheimer's disease." PloS one 11.3 (2016): e0150672.): 
+DIMA can take a numeric matrix or the file path to a MaxQuant ProteinGroups file as an input. The data is reduced to the columns which include `pattern` in their sample names. The imputation algorithms can be defined by the user, by default the nine most frequently selected algorithms of 142 Pride data sets are applied.
+
+MaxQuant file path as input (Example taken from (Reimann et al. (2020))):
+```
+library(DIMAR)
+filename <- "proteinGroups_PXD008893.txt"
+filepath <- system.file("extdata", filename, package = "DIMAR")
+Imp <- DIMAR::dimar(mtx = filepath, pattern = 'Intensity', group = c('PKB','PKC'))
+```
+
+Matrix as input 
+(Example taken from Khoonsari, Payam Emami, et al. "Analysis of the cerebrospinal fluid proteome in Alzheimer's disease." PloS one 11.3 (2016): e0150672.): 
 
 ```
 library(DIMAR)
@@ -36,13 +46,7 @@ mtx <- as.matrix(df[, grepl("^AD\\d|^C\\d", names(df))])
 mtx <- mtx[1:400,]
 Imp2 <- DIMAR::dimar(mtx = mtx, pattern = NULL)
 ```
-
-MaxQuant file path as input (Example taken from (Reimann et al. (2020))):
+Same example with defining the imputation algorithms:
 ```
-library(DIMAR)
-filename <- "proteinGroups_PXD008893.txt"
-filepath <- system.file("extdata", filename, package = "DIMAR")
-Imp <- DIMAR::dimar(mtx = filepath, pattern = 'Intensity', group = c('PKB','PKC'))
+Imp2 <- DIMAR::dimar(mtx = mtx, pattern = "^AD\\d|^C\\d", methods = c('impSeqRob','impSeq','missForest','imputePCA','ppca','bpca'))
 ```
-
-
