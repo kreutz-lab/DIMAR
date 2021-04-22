@@ -38,6 +38,7 @@ dimarEvaluatePerformance <- function(Imputations, ref, sim, rankby = 'RMSE',
     require(amap)
     h <- hcluster(t(ref))
     group <- cutree(h, k = 2)
+    if (sum(group==1)<2 | sum(group==2)<2) { RMSEttest<-FALSE} 
   }
   }
 

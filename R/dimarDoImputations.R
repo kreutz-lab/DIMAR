@@ -16,7 +16,7 @@ dimarDoImputations <- function(mtx, method='fast', lib=NULL) {
   # Assign imputation methods
   if (is.null(method)) {
     method <- c('impSeqRob','impSeq','missForest','imputePCA','ppca','MIPCA','bpca','SVDImpute','kNNImpute','regression','aregImpute','softImpute','MinDet','amelia','SVTImpute','irmi','knn','QRILC','nipals','MinProb','rf','sample','pmm','svdImpute','norm','cart','midastouch','mean','ri')
-  } else if (method == 'fast') {
+  } else if ('fast' %in% method) {
     method <- c('impSeqRob','impSeq','missForest','imputePCA','ppca','MIPCA','bpca','SVDImpute','kNNImpute')
   }
 
@@ -33,6 +33,7 @@ dimarDoImputations <- function(mtx, method='fast', lib=NULL) {
     doParallel::registerDoParallel()
   }
   Imp <- list()
+  `%dopar%` <- foreach::`%dopar%`
   # loop over imputation methods
   for (m in 1:length(method)) {
     if (length(dim(mtx)) > 2) {

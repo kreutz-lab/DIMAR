@@ -19,7 +19,7 @@ dimar <- function(mtx, pattern = NULL, methods = 'fast', npat = NULL, group = 'c
   if (is.character(mtx)) {
     file <- mtx
     ext <- strsplit(basename(file), split = "\\.")[[1]][-1]
-    mtx <- read.table(file, header = T, sep = "\t", allowEscapes = TRUE, check.names = FALSE)
+    mtx <- read.table(file, header = TRUE, sep = "\t", allowEscapes = TRUE, check.names = FALSE)
     row.names(mtx) <- mtx[, "Protein IDs"]
   } else {
     file <- NULL
@@ -48,7 +48,7 @@ dimar <- function(mtx, pattern = NULL, methods = 'fast', npat = NULL, group = 'c
   Imp <- dimarDoOptimalImputation(mtx, rownames(Performance))
 
   if (!is.null(file)) {  # if file name is given, the imputed matrix is written into file
-    write.table(Imp, file = paste0("Imp_", basename(file)),sep = "\t")
+    write.table(Imp$Imputation, file = paste0("Imp_", basename(file)),sep = "\t")
     print(paste("Imputation written: Imp_", basename(file)))
   }
   return(Imp)

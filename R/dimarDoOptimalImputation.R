@@ -19,8 +19,10 @@ dimarDoOptimalImputation <- function(mtx, method, lib = NULL) {
     eval(parse(text = paste('require(', dimarGetLib(method[m]), ')')))
     Imp <- dimarDoImputationsR(mtx, method[m], dimarGetLib(method[m]))
   }
-  Imp <- as.matrix(Imp[, 1:dim(mtx)[2]])
+  Imputation <- as.matrix(Imp[, 1:dim(mtx)[2]])
   print(paste('Imputation of input data with algorithm', method[m], 'is performed.'))
+  Imp <- list(Imputation,method[m])
+  names(Imp) <- c('Imputation','method')
   return(Imp)
 }
 
