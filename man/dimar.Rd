@@ -25,5 +25,6 @@ mtx <- matrix(rnorm(1000), nrow=100)
 mtx[sample(c(1:1000),100)] <- NA
 Imp <- dimar(mtx)
 Imp <- dimar('mtx = proteinGroups.txt', pattern = 'LFQ')
-Imp <- dimar(mtx = 'proteinGroups_PXD008893.txt', pattern = 'Intensity', group = c('PKB','PKC')))
+Imp <- dimar(mtx = 'proteinGroups_PXD008893.txt', pattern = 'Intensity', group = c('PKB','PKC'))
+
 }

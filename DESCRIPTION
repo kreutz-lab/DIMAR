@@ -1,5 +1,5 @@
 Package: DIMAR
-Version: 0.4.3
+Version: 0.4.4
 Title: Data-driven selection of an imputation algorithm in R
 Authors@R: c(person("Janine", "Egert",
   email = "egert@imbi.uni-freiburg.de",
@@ -14,12 +14,19 @@ Authors@R: c(person("Janine", "Egert",
   role = c("aut","ctb"), 
   comment = c(ORCID = "0000-0002-5488-0985")))
 Description: Data-driven selction of an imputation algorithm in R
-Imports: stats, graphics, utils, foreach, R.utils, SummarizedExperiment, doParallel, matrixStats, R.matlab, amap, mice , norm, Amelia, Hmisc, imputeLCMD, missForest, softImpute, VIM, rrcovNA, missMDA, mi, DMwR, GMSimpute, pcaMethods, impute, imputation
-License: GPL-3 + file LICENSE
+Imports: 
+    stats, graphics, utils, foreach, R.utils, SummarizedExperiment, 
+    doParallel, matrixStats, R.matlab, amap, mice , norm, Amelia, Hmisc, 
+    imputeLCMD, missForest, softImpute, VIM, rrcovNA, missMDA, mi, DMwR, GMSimpute, pcaMethods, impute, 
+    imputation, ggplot2, ggridges, RColorBrewer
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
 Suggests: 
-    rmarkdown,
-    knitr
-VignetteBuilder: knitr
+    knitr, 
+    BiocStyle, 
+    rmarkdown
+VignetteBuilder: 
+    knitr,
+    rmarkdown
