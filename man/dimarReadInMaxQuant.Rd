@@ -15,6 +15,3 @@ Quantitative matrix
 \description{
 Transforms MaxQuant proteinGroups.txt file content to quantitative matrix
 }
-\examples{
-Sample example to demonstrate the function
-}

@@ -4,7 +4,7 @@
 #' @return Quantitative matrix
 #' @param filename String of MaxQuant proteinGroups file name
 #' @export dimarReadInMaxQuant
-#' @examples Sample example to demonstrate the function
+#' @examples
 dimarReadInMaxQuant <- function(filename){
     # Read file
     dat <- read.csv(filename, allowEscapes = TRUE, check.names = FALSE,sep = "\t")

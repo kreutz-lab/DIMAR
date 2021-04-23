@@ -6,27 +6,28 @@
 #' @param methods List of imputation algorithms ['fast'] uses the nine most selected algorithms
 #' @param npat Number of patterns of MVs to be simulated and to test the algorithms on [5/10/20 depending on the size of the data]
 #' @param group vector of group indices for ttest (group==1 vs group==2) ['cluster'] as a default, clustering with 2 cluster is performed
-#' @export dimar dimar
+#' @export dimar
 #' @examples
 #' mtx <- matrix(rnorm(1000), nrow=100)
 #' mtx[sample(c(1:1000),100)] <- NA
 #' Imp <- dimar(mtx)
-#' Imp <- dimar('mtx = proteinGroups.txt', pattern = 'LFQ')
-#' Imp <- dimar(mtx = 'proteinGroups_PXD008893.txt', pattern = 'Intensity', group = c('PKB','PKC'))
 #'
+#' filename <- "Test1.txt"
+#' filepath <- system.file("extdata", filename, package = "DIMAR")
+#' Imp <- dimar(mtx = filepath, pattern = 'Intensity', group = c('PKB','PKC'))
 
 dimar <- function(mtx, pattern = NULL, methods = 'fast', npat = NULL, group = 'cluster') {
 
   if (is.character(mtx)) {
     file <- mtx
     ext <- strsplit(basename(file), split = "\\.")[[1]][-1]
-    mtx <- read.table(file, header = TRUE, sep = "\t", allowEscapes = TRUE, check.names = FALSE)
+    mtx <- utils::read.table(file, header = TRUE, sep = "\t", allowEscapes = TRUE, check.names = FALSE)
     row.names(mtx) <- mtx[, "Protein IDs"]
   } else {
     file <- NULL
   }
   if (class(mtx) == 'SingleCellExperiment' || class(mtx) == 'SummarizedExperiment') {
-    mtx <- as.matrix(assay(mtx))
+    mtx <- as.matrix(SummarizedExperiment::assay(mtx))
   }
   if (is.character(pattern)) {
     mtx <- as.matrix(mtx[, grepl(pattern, names(mtx))])
@@ -49,7 +50,7 @@ dimar <- function(mtx, pattern = NULL, methods = 'fast', npat = NULL, group = 'c
   Imp <- dimarDoOptimalImputation(mtx, rownames(Performance))
 
   if (!is.null(file)) {  # if file name is given, the imputed matrix is written into file
-    write.table(Imp$Imputation, file = paste0("Imp_", basename(file)),sep = "\t")
+    utils::write.table(Imp$Imputation, file = paste0("Imp_", basename(file)),sep = "\t")
     print(paste("Imputation written: Imp_", basename(file)))
   }
   return(Imp)
