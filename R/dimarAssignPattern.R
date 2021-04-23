@@ -37,7 +37,7 @@ dimarAssignPattern <- function(ref, coef, mtx = NULL, npat = NULL) {
     ind <- which(r < p & !is.na(ref),arr.ind = TRUE)
     # if ref has MV already, #MV = #MV of original mtx
     if (!is.null(mtx) & dim(ind)[1] > sum(is.na(mtx))) {
-      ind <- ind[sample(1:length(ind),sum(is.na(mtx))),]
+      ind <- ind[sample(1:dim(ind)[1],sum(is.na(mtx))),]
     }
     # Assign NA to ref
     pat1 <- ref
