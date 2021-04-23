@@ -1,5 +1,7 @@
 # DIMAR
-Data-driven selection of an imputation algorithm in R. See also the [DIMAR wiki](https://github.com/kreutz-lab/DIMAR/wiki).
+Data-driven selection of an imputation algorithm in R. 
+
+For further inforamtion refer to the publication [Egert et al. (2020)](https://www.biorxiv.org/content/10.1101/2020.10.13.323618v1) or the [DIMAR wiki](https://github.com/kreutz-lab/DIMAR/wiki).
 
 # Installation
 
@@ -48,8 +50,3 @@ Same example with defining the imputation algorithms:
 ```
 Imp2 <- DIMAR::dimar(mtx = mtx, pattern = "^AD\\d|^C\\d", methods = c('impSeqRob','impSeq','missForest','imputePCA','ppca','bpca'))
 ```
-
-# Method
-In the [DIMAR Wiki](https://github.com/kreutz-lab/DIMAR/wiki) the implementation is described in more detail.
-
-For further questions refer to the publication [Egert et al. (2020)](https://www.biorxiv.org/content/10.1101/2020.10.13.323618v1) or contact @JanineEgert @ebrombacher or @clemenskreutz directly.
