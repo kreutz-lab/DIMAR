@@ -1,5 +1,5 @@
 # DIMAR
-Data-driven selection of an imputation algorithm in R. For further inforamtion see also the [DIMAR wiki](https://github.com/kreutz-lab/DIMAR/wiki).
+Data-driven selection of an imputation algorithm in R. For further inforamtion refer to the publication [Egert et al. (2020)](https://www.biorxiv.org/content/10.1101/2020.10.13.323618v1) or the [DIMAR wiki](https://github.com/kreutz-lab/DIMAR/wiki).
 
 # Installation
 
