@@ -12,7 +12,7 @@
 #' library(openxlsx)
 #' filename <- "Test2.xlsx"
 #' filepath <- system.file("extdata", filename, package = "DIMAR")
-#' df <- openxlsx::read.xlsx(filepath, sheet="Sheet1", startRow = 2)
+#' df <- read.xlsx(filepath, sheet="Sheet1", startRow = 2)
 #' row.names(df) <- paste(c(1:nrow(df)), df$`Protein.(Uniprot.ID)`, sep = "_")
 #' df <- df[, grepl("^AD\\d|^C\\d", names(df))]
 #' mtx <- as.matrix(df)
@@ -20,10 +20,10 @@
 
 dimarPlotSampleDensity <- function(mtx, savePlot = FALSE, width = 5, height = 13) {
   df <- as.data.frame(mtx)
-  df.long <- stack(df)
+  df.long <- utils::stack(df)
   colnames(df.long) <- c("Intensity", "Sample")
 
-  ridgeplot <- ggplot2::ggplot(df.long, aes(x = Intensity, y = Sample)) +
+  ridgeplot <- ggplot2::ggplot(df.long, ggplot2::aes(x = Intensity, y = Sample)) +
     ggridges::geom_density_ridges(alpha = 0) +
     ggplot2::theme_minimal()
 

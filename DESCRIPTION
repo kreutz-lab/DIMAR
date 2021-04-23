@@ -18,7 +18,7 @@ Imports:
     stats, graphics, utils, foreach, R.utils, SummarizedExperiment, 
     doParallel, matrixStats, R.matlab, amap, mice , norm, Amelia, Hmisc, 
     imputeLCMD, missForest, softImpute, VIM, rrcovNA, missMDA, mi, DMwR, GMSimpute, pcaMethods, impute, 
-    imputation, ggplot2, ggridges, RColorBrewer
+    imputation, ggplot2, ggridges, RColorBrewer, openxlsx
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

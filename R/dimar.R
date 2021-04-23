@@ -51,7 +51,7 @@ dimar <- function(mtx, pattern = NULL, methods = 'fast', npat = NULL, group = 'c
 
   if (!is.null(file)) {  # if file name is given, the imputed matrix is written into file
     utils::write.table(Imp$Imputation, file = paste0("Imp_", basename(file)),sep = "\t")
-    print(paste("Imputation written: Imp_", basename(file)))
+    print(paste0("Imputation written: Imp_", basename(file)))
   }
   return(Imp)
 }

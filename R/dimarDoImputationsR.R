@@ -27,16 +27,16 @@ dimarDoImputationsR <- function(mtx, method = NULL, lib = NULL) {
         Imp <- {}
       } else {
         I <- pcaMethods::pca(mtx, method = method)
-        Imp <- completeObs(I)
+        Imp <- pcaMethods::completeObs(I)
       }
     } else if (lib == 'impute') {
-      I <- impute.knn(as.matrix(mtx))
+      I <- impute::impute.knn(as.matrix(mtx))
       Imp <- I$data
     } else if (lib == 'norm') {
-      s <- prelim.norm(mtx)
-      thetahat <- em.norm(s)
-      rngseed(1)
-      Imp <- imp.norm(s, thetahat, dat)
+      s <- norm::prelim.norm(mtx)
+      thetahat <- norm::em.norm(s)
+      norm::rngseed(1)
+      Imp <- norm::imp.norm(s, thetahat, dat)
     } else if (lib == 'missMDA') {
       f <- get(method)
       imp <- f(data.frame(mtx), nboot = 1)
@@ -59,7 +59,7 @@ dimarDoImputationsR <- function(mtx, method = NULL, lib = NULL) {
       f <- get(method)
       Imp <- f(as.matrix(mtx))
     } else if (lib == 'softImpute') {
-      f <- softImpute(as.matrix(mtx))
+      f <- softImpute::softImpute(as.matrix(mtx))
       Imp <- softImpute::complete(as.matrix(mtx),f)
     } else if (lib == 'imputeLCMD') {
       if (method == 'QRILC') {
@@ -87,13 +87,13 @@ dimarDoImputationsR <- function(mtx, method = NULL, lib = NULL) {
     } else if (lib == 'Amelia') {
       # if isSymmetric, R aborts without error message
       if (isSymmetric(mtx)) {
-        f <- withTimeout({Amelia::amelia(mtx, m = 1)}, timeout = 1, cpu = 100, elapsed = 3600) # of all pride mtx the max time of amelia was cpu=1
+        f <- R.utils::withTimeout({Amelia::amelia(mtx, m = 1)}, timeout = 1, cpu = 100, elapsed = 3600) # of all pride mtx the max time of amelia was cpu=1
         Imp <- f$imputations[[1]]
       } else {
         Imp <- NULL
       }
     } else if (lib == 'missForest') {
-      f <- missForest(mtx)
+      f <- missForest::missForest(mtx)
       Imp <- f$ximp
     } else if (lib == 'Hmisc') {
       colnames(mtx) <- c(paste0("X", 1:dim(mtx)[2]))
@@ -102,9 +102,9 @@ dimarDoImputationsR <- function(mtx, method = NULL, lib = NULL) {
         formula <- paste(formula,' +X', j, sep = '')
       }
       if (method == 'aregImpute') {
-        f <- Hmisc::aregImpute(as.formula(formula), data = data.frame(mtx), n.impute = 1, type = "pmm")
+        f <- Hmisc::aregImpute(stats::as.formula(formula), data = data.frame(mtx), n.impute = 1, type = "pmm")
       } else {
-        f <- Hmisc::aregImpute(as.formula(formula), data = data.frame(mtx), n.impute = 1, type = method)
+        f <- Hmisc::aregImpute(stats::as.formula(formula), data = data.frame(mtx), n.impute = 1, type = method)
       }
       Imp <- array(unlist( Hmisc::impute.transcan(f, imputation = TRUE, data = data.frame(mtx),
                                                   list.out = TRUE)), dim = dim(mtx ))
@@ -112,13 +112,13 @@ dimarDoImputationsR <- function(mtx, method = NULL, lib = NULL) {
     } else if (lib == 'DMwR') {
       Imp <- DMwR::knnImputation(mtx)
     } else if (lib == 'mi') {
-      I <- mi(data.frame(mtx), n.chains = 1)
+      I <- mi::mi(data.frame(mtx), n.chains = 1)
       Imp <- mi::complete(I)[1:length(mtx)]
     } else if (lib == 'GMSimpute') {
-      Imp <- GMS.Lasso(mtx, log.scale = TRUE, TS.Lasso = TRUE)
+      Imp <- GMSimpute::GMS.Lasso(mtx, log.scale = TRUE, TS.Lasso = TRUE)
     } else {
       Imp <- NULL
-      error(paste('dimarDoImputationsR.m: library', lib, 'is not recognized. Expand code here.'))
+      stop(paste('dimarDoImputationsR.m: library', lib, 'is not recognized. Expand code here.'))
     }
   }, error = function(e) {
     Imp <<- NULL

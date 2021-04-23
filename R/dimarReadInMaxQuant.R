@@ -4,10 +4,9 @@
 #' @return Quantitative matrix
 #' @param filename String of MaxQuant proteinGroups file name
 #' @export dimarReadInMaxQuant
-#' @examples
 dimarReadInMaxQuant <- function(filename){
     # Read file
-    dat <- read.csv(filename, allowEscapes = TRUE, check.names = FALSE,sep = "\t")
+    dat <- utils::read.csv(filename, allowEscapes = TRUE, check.names = FALSE,sep = "\t")
 
     # Select all columns with LFQ intensities
     mtx <- as.matrix(dat[, grepl("^Int", names(dat))])

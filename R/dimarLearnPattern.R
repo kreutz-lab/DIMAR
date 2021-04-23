@@ -28,12 +28,12 @@ dimarLearnPattern <- function(mtx) {
     design <- dimarConstructDesignMatrix(mtx[ind,])
     design <- dimarConstructRegularizationMatrix(design)
 
-    #fit <- glm.fit(X,y,family=binomial(),weights=rep(1,dim(X)[1]))
-    fit <- glm.fit(design$X, design$y, family = binomial())
+    #fit <- stats::glm.fit(X,y,family=stats::binomial(),weights=rep(1,dim(X)[1]))
+    fit <- stats::glm.fit(design$X, design$y, family = stats::binomial())
     if (i == 1) {
       coef <- coefficients(fit)
     } else {
-      coef <- rbind(coef, coefficients(fit))
+      coef <- rbind(coef, stats::coefficients(fit))
     }
   }
   # sort row coefficients, intensity/column coefficients are set to mean over nsub (for loop)

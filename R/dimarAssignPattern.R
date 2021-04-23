@@ -33,7 +33,7 @@ dimarAssignPattern <- function(ref, coef, mtx = NULL, npat = NULL) {
     yhat <- exp(X$X %*% coef)/(1 + exp(X$X %*% coef))
     p <- matrix(yhat,nrow = dim(ref)[1])
     # binomial draw
-    r <- matrix(runif(length(yhat)),nrow = dim(p)[1])
+    r <- matrix(stats::runif(length(yhat)),nrow = dim(p)[1])
     ind <- which(r < p & !is.na(ref),arr.ind = TRUE)
     # if ref has MV already, #MV = #MV of original mtx
     if (!is.null(mtx) & dim(ind)[1] > sum(is.na(mtx))) {

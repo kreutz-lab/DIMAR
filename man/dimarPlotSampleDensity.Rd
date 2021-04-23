@@ -26,7 +26,7 @@ library(DIMAR)
 library(openxlsx)
 filename <- "Test2.xlsx"
 filepath <- system.file("extdata", filename, package = "DIMAR")
-df <- openxlsx::read.xlsx(filepath, sheet="Sheet1", startRow = 2)
+df <- read.xlsx(filepath, sheet="Sheet1", startRow = 2)
 row.names(df) <- paste(c(1:nrow(df)), df$`Protein.(Uniprot.ID)`, sep = "_")
 df <- df[, grepl("^AD\\\\d|^C\\\\d", names(df))]
 mtx <- as.matrix(df)

@@ -16,7 +16,7 @@ dimarConstructRegularizationMatrix <- function(design) {
   Xreg <- matrix(0, 2*(length(design$Xtype) - nrest), length(design$Xtype))
   yreg <- matrix(0, 2*(length(design$Xtype) - nrest), 1)
   # median for the biological predictors
-  Xreg[, 1:nrest] <- rep(median(design$X[,1:nrest]), dim(Xreg)[1])
+  Xreg[, 1:nrest] <- rep(stats::median(design$X[,1:nrest]), dim(Xreg)[1])
   # 0/1 to regularize row/col coefficients
   id <- 1
   for (i in (nrest + 1):dim(Xreg)[2]) {
