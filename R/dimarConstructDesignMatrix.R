@@ -14,7 +14,7 @@
 #' mtx <- matrix(rnorm(1000),nrow=100)
 #' mtx[sample(c(1:1000),100)] <- NA
 #' design <- dimarConstructDesignMatrix(mtx)
-#' yhat <- exp(X$X%*%coef)/(1+exp(X$X%*%coef))
+#' yhat <- exp(design$X%*%coef)/(1+exp(design$X%*%coef))
 
 dimarConstructDesignMatrix <- function(mtx) {
   X <- matrix(0L, nrow = dim(mtx)[1]*dim(mtx)[2], ncol = dim(mtx)[1] + dim(mtx)[2] + 2)

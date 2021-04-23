@@ -36,7 +36,7 @@ dimarDoImputationsR <- function(mtx, method = NULL, lib = NULL) {
       s <- norm::prelim.norm(mtx)
       thetahat <- norm::em.norm(s)
       norm::rngseed(1)
-      Imp <- norm::imp.norm(s, thetahat, dat)
+      Imp <- norm::imp.norm(s, thetahat, mtx)
     } else if (lib == 'missMDA') {
       f <- get(method)
       imp <- f(data.frame(mtx), nboot = 1)
