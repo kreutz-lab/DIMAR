@@ -81,7 +81,7 @@ dimarDoImputationsR <- function(mtx, method = NULL, lib = NULL) {
         Imp <- I$x
       }
     } else if (lib == 'mice') {
-      colnames(mtx) <- c(paste0("X",1:dim(mtx)[2]))
+      colnames(mtx) <- c(paste0("X",1:ncol(mtx)))
       I <- mice::mice(mtx, m = 1, method = method)
       Imp <- mice::complete(I)
     } else if (lib == 'Amelia') {
@@ -96,9 +96,9 @@ dimarDoImputationsR <- function(mtx, method = NULL, lib = NULL) {
       f <- missForest::missForest(mtx)
       Imp <- f$ximp
     } else if (lib == 'Hmisc') {
-      colnames(mtx) <- c(paste0("X", 1:dim(mtx)[2]))
+      colnames(mtx) <- c(paste0("X", 1:ncol(mtx)))
       formula <- '~ X1'
-      for (j in 2:dim(mtx)[2]) {
+      for (j in 2:ncol(mtx)) {
         formula <- paste(formula,' +X', j, sep = '')
       }
       if (method == 'aregImpute') {

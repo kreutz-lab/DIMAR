@@ -18,24 +18,24 @@
 #' yhat <- exp(design$X %*% coefficients(fit))/(1+exp(design$X %*% coefficients(fit)))
 
 dimarConstructDesignMatrix <- function(mtx) {
-  X <- matrix(0L, nrow = dim(mtx)[1]*dim(mtx)[2], ncol = dim(mtx)[1] + dim(mtx)[2] + 2)
+  X <- matrix(0L, nrow = nrow(mtx)*ncol(mtx), ncol = nrow(mtx) + ncol(mtx) + 2)
   # Intercept
-  X[,1] <- rep(1, dim(mtx)[1]*dim(mtx)[2])
+  X[,1] <- rep(1, nrow(mtx)*ncol(mtx))
   Xname <- 'Intercept'
   Xtype <- 0
   # Mean intensity
-  X[,2] <- scale(rep(rowMeans(mtx, na.rm = TRUE), dim(mtx)[2]))
+  X[,2] <- scale(rep(rowMeans(mtx, na.rm = TRUE), ncol(mtx)))
   Xname[2] <- 'mean'
   Xtype[2] <- 1
-  row <- rep(1:dim(mtx)[1], dim(mtx)[2])
-  col <- rep(1:dim(mtx)[2], each = dim(mtx)[1])
-  for (i in 1:dim(mtx)[2]) {
+  row <- rep(1:nrow(mtx), ncol(mtx))
+  col <- rep(1:ncol(mtx), each = nrow(mtx))
+  for (i in 1:ncol(mtx)) {
     X[col == i, i + 2] <- 1
     Xname <- c(Xname, paste('Col',i))
     Xtype <- c(Xtype, 2)
   }
-  for (i in 1:dim(mtx)[1]) {
-    X[row == i, i + 2 + dim(mtx)[2]] <- 1
+  for (i in 1:nrow(mtx)) {
+    X[row == i, i + 2 + ncol(mtx)] <- 1
     Xname <- c(Xname, paste('Row', i))
     Xtype <- c(Xtype, 3)
   }

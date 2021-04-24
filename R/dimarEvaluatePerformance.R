@@ -58,7 +58,7 @@ dimarEvaluatePerformance <- function(Imputations, ref, sim, rankby = 'RMSE',
           RMSE[p,a] <- sqrt(sum(Diff^2, na.rm = TRUE)/ndata)
           RSR[p,a] <- RMSE[p,a]/stats::sd(ref, na.rm = TRUE)
           pF[p,a] <- stats::var.test(im,ref)$p.value
-          Acc[p,a] <- length(which(abs(Diff/ref) < 0.05))/dim(ref)[1]/dim(ref)[2]*100
+          Acc[p,a] <- length(which(abs(Diff/ref) < 0.05))/nrow(ref)/ncol(ref)*100
           PCC[p,a] <- stats::cor(as.vector(im), as.vector(ref))
           if (RMSEttest) {
             for (t in 1:dim(ref)[1]) {

@@ -24,10 +24,10 @@ dimarConstructReferenceData <- function(mtx, cut = 0.2) {
   mtx <- mtx[order(rowSums(is.na(mtx))),]
   nasum <- rowSums(is.na(mtx))
   # Assign mtx1 until cut
-  nacut <- nasum[ceiling(dim(mtx)[1]*cut)]
+  nacut <- nasum[ceiling(nrow(mtx)*cut)]
   mtx1 <- mtx[nasum <= nacut,]
-  idx1 <- 1:dim(mtx1)[1]
-  idx2 <- (dim(mtx1)[1] + 1):dim(mtx)[1]
+  idx1 <- 1:nrow(mtx1)
+  idx2 <- (nrow(mtx1) + 1):nrow(mtx)
 
   # Take mtx1 multiple times and normalize to protein means/std
   idxnew <- c()

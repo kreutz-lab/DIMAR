@@ -43,7 +43,7 @@ dimarDoImputations <- function(mtx, method='fast', lib=NULL) {
         dimarDoImputationsR(mtx[,,i],method[m], lib[m])
       }
       if (!is.null(I)) {
-        Imp[[method[m]]] <- array(as.matrix(I),dim = c(dim(mtx)[1], dim(mtx)[2], dim(mtx)[3]))
+        Imp[[method[m]]] <- array(as.matrix(I),dim = c(nrow(mtx), ncol(mtx), dim(mtx)[3]))
       } else {
         warning('DoImputations.R: Imputation of method ', method[m],' not feasible.')
       }

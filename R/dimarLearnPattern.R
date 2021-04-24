@@ -11,13 +11,13 @@
 
 dimarLearnPattern <- function(mtx) {
   # Subsample indices
-  if (dim(mtx)[1] > 1000) {
-    nsub <- ceiling(dim(mtx)[1] / 1000)
-    indrand <- sample(1:dim(mtx)[1], dim(mtx)[1])
-    npersub <- ceiling(dim(mtx)[1] / nsub)
+  if (nrow(mtx) > 1000) {
+    nsub <- ceiling(nrow(mtx) / 1000)
+    indrand <- sample(1:nrow(mtx), nrow(mtx))
+    npersub <- ceiling(nrow(mtx) / nsub)
   } else {
     nsub <- 1
-    ind <- 1:dim(mtx)[1]
+    ind <- 1:nrow(mtx)
   }
 
   for (i in 1:nsub) {
