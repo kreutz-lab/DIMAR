@@ -25,6 +25,7 @@ dimarPlotSampleDensity <- function(mtx, savePlot = FALSE, width = 5, height = 13
 
   ridgeplot <- ggplot2::ggplot(df.long, ggplot2::aes(x = Intensity, y = forcats::fct_rev(Sample))) +
     ggridges::geom_density_ridges(alpha = 0) +
+    ggplot2::ylab(Sample) +
     ggplot2::theme_minimal()
 
   if (savePlot) {
