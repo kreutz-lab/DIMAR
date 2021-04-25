@@ -1,5 +1,5 @@
 Package: DIMAR
-Version: 0.4.8
+Version: 0.4.9
 Title: Data-driven selection of an imputation algorithm in R
 Authors@R: c(person("Janine", "Egert",
   email = "egert@imbi.uni-freiburg.de",
@@ -18,7 +18,7 @@ Imports:
     stats, graphics, utils, foreach, R.utils, SummarizedExperiment, 
     doParallel, matrixStats, R.matlab, amap, mice , norm, Amelia, Hmisc, 
     imputeLCMD, missForest, softImpute, VIM, rrcovNA, missMDA, mi, DMwR, GMSimpute, pcaMethods, impute, 
-    imputation, ggplot2, ggridges, RColorBrewer, openxlsx
+    imputation, ggplot2, ggridges, RColorBrewer, openxlsx, forcats
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
