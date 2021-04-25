@@ -19,7 +19,7 @@ dimarConstructRegularizationMatrix <- function(design) {
   Xreg[, 1:nrest] <- rep(stats::median(design$X[,1:nrest]), nrow(Xreg))
   # 0/1 to regularize row/col coefficients
   id <- 1
-  for (i in (nrest + 1):ncol(Xreg) {
+  for (i in (nrest + 1):ncol(Xreg)) {
     Xreg[id:(id + 1), i] = 1
     yreg[id + 1] = 1
     id = id + 2

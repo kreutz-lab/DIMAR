@@ -31,7 +31,7 @@ dimarLearnPattern <- function(mtx) {
     #fit <- stats::glm.fit(X,y,family=stats::binomial(),weights=rep(1,dim(X)[1]))
     fit <- stats::glm.fit(design$X, design$y, family = stats::binomial())
     if (i == 1) {
-      coef <- coefficients(fit)
+      coef <- stats::coefficients(fit)
     } else {
       coef <- rbind(coef, stats::coefficients(fit))
     }
