@@ -24,15 +24,16 @@ dimarPlotHeatmap <- function(mtx, savePlot = FALSE, width = 6, height = 6) {
 
   mtx.heatmap <- mtx[order(rowMeans(mtx, na.rm = TRUE), -rowSums(is.na(mtx))), ]
 
-  heatmap <- heatmap(mtx.heatmap, Rowv = NA, Colv = NA, na.rm = T,
-                     col = RColorBrewer::brewer.pal(n = 9, name = "Blues"), scale = "none",
-                     labRow = FALSE, margins = c(6, 0.5))
 
   if (savePlot) {
     grDevices::pdf("heatmap.pdf", width = width, height = height)
-    heatmap
+    heatmap(mtx.heatmap, Rowv = NA, Colv = NA, na.rm = T,
+            col = RColorBrewer::brewer.pal(n = 9, name = "Blues"), scale = "none",
+            labRow = FALSE, margins = c(6, 0.5))
     grDevices::dev.off()
   } else {
-    heatmap
+    heatmap(mtx.heatmap, Rowv = NA, Colv = NA, na.rm = T,
+            col = RColorBrewer::brewer.pal(n = 9, name = "Blues"), scale = "none",
+            labRow = FALSE, margins = c(6, 0.5))
   }
 }
