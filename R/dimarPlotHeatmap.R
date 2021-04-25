@@ -22,8 +22,7 @@
 
 dimarPlotHeatmap <- function(mtx, savePlot = FALSE, width = 6, height = 6) {
 
-  mtx.heatmap <- mtx[order(rowMeans(mtx, na.rm = TRUE), -rowSums(is.na(mtx))), ]
-
+  mtx.heatmap <- mtx[order(-rowSums(is.na(mtx)), rowMeans(mtx, na.rm = TRUE)), ]
 
   if (savePlot) {
     grDevices::pdf("heatmap.pdf", width = width, height = height)
