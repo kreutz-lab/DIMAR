@@ -1,7 +1,7 @@
 # DIMAR
 Data-driven selection of an imputation algorithm in R. 
 
-For further inforamtion refer to the publication [Egert et al. (2020)](https://www.biorxiv.org/content/10.1101/2020.10.13.323618v1) or the [DIMAR wiki](https://github.com/kreutz-lab/DIMAR/wiki).
+For further inforamtion refer to the publication [Egert et al. (2021)](https://pubs.acs.org/doi/abs/10.1021/acs.jproteome.1c00119) or the [DIMAR wiki](https://github.com/kreutz-lab/DIMAR/wiki).
 
 # Installation
 
