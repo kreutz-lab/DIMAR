@@ -42,7 +42,7 @@ dimarMatrixPreparation <- function(mtx, nacut = 2, logflag = 'auto'){
         mtx = mtx[rowSums(!is.na(mtx)) > nacut*ncol(mtx),]
         print(paste("Features with less than",nacut," percent of data points are removed."))
     } else if (nacut >= 1) {
-        mtx = mtx[rowSums(!is.na(mtx)) > nacut,]
+        mtx = mtx[rowSums(!is.na(mtx)) >= nacut,]
         print(paste("Features with less than",nacut,"data points are removed."))
     } else {
         warning(paste('dimarMatrixPreparation: nacut',nacut,'not known. Expand code here. No transformation is performed.'))
