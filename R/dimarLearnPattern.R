@@ -39,7 +39,8 @@ dimarLearnPattern <- function(mtx) {
   }
   # sort row coefficients, intensity/column coefficients are set to mean over nsub (for loop)
   if (nsub > 1) {
-    coef <- c(colMeans(coef[, design$Xtype != 3]), sort(coef[, design$Xtype == 3]))
+    idx <- which(design$Xtype!=3)
+    coefmean <- c(colMeans(coef[,idx]), c(sort(coef[,setdiff(1:dim(coef)[2],idx)])))
   }
 
   print('Pattern of MVs is learned by logistic regression.')
