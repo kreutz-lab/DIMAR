@@ -15,6 +15,7 @@ dimarLearnPattern <- function(mtx) {
     nsub <- ceiling(nrow(mtx) / 1000)
     indrand <- sample(1:nrow(mtx), nrow(mtx))
     npersub <- ceiling(nrow(mtx) / nsub)
+    coef <- matrix(,nrow=nsub,ncol=(npersub+dim(mtx)[2]+2))
   } else {
     nsub <- 1
     ind <- 1:nrow(mtx)
@@ -23,18 +24,18 @@ dimarLearnPattern <- function(mtx) {
   for (i in 1:nsub) {
     #  i <- 1
     if (nsub > 1) {
-      ind <- indrand[(npersub*(i - 1) + 1):(npersub*i)]
+      if (i==nsub) {
+        ind <- indrand[(npersub*(i-1)+1):length(indrand)]
+      } else {
+        ind <- indrand[(npersub*(i - 1) + 1):(npersub*i)]
+      }
     }
     design <- dimarConstructDesignMatrix(mtx[ind,])
     design <- dimarConstructRegularizationMatrix(design)
 
     #fit <- stats::glm.fit(X,y,family=stats::binomial(),weights=rep(1,dim(X)[1]))
     fit <- stats::glm.fit(design$X, design$y, family = stats::binomial())
-    if (i == 1) {
-      coef <- stats::coefficients(fit)
-    } else {
-      coef <- rbind(coef, stats::coefficients(fit))
-    }
+    coef[i,1:length(coefficients(fit))] <- stats::coefficients(fit)
   }
   # sort row coefficients, intensity/column coefficients are set to mean over nsub (for loop)
   if (nsub > 1) {
