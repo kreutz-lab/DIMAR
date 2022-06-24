@@ -45,7 +45,7 @@ dimarAssignPattern <- function(ref, coef, mtx = NULL, npat = NULL) {
     # if protein not measured at all, randomly assign one data point
     if (any(rowSums(is.na(pat1)) == ncol(pat1))) {
       allna <- which(rowSums(is.na(pat1)) == ncol(pat1))
-      allna <- cbind(allna,sample(1:ncol(pat1),length(allna)))
+      allna <- cbind(allna,sample(1:ncol(pat1),length(allna),replace=TRUE))
       pat1[allna] <- ref[allna]
     }
     pat[,,i] <- pat1
