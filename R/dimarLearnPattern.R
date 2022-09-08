@@ -19,6 +19,7 @@ dimarLearnPattern <- function(mtx) {
   } else {
     nsub <- 1
     ind <- 1:nrow(mtx)
+    coef <- matrix(,nrow=nsub,ncol=(dim(mtx)[1]+dim(mtx)[2]+2))
   }
 
   for (i in 1:nsub) {
