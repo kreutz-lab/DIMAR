@@ -19,7 +19,6 @@ dimarLearnPattern <- function(mtx) {
   } else {
     nsub <- 1
     ind <- 1:nrow(mtx)
-    coef <- matrix(,nrow=nsub,ncol=(dim(mtx)[1]+dim(mtx)[2]+2))
   }
 
   for (i in 1:nsub) {
@@ -36,7 +35,11 @@ dimarLearnPattern <- function(mtx) {
 
     #fit <- stats::glm.fit(X,y,family=stats::binomial(),weights=rep(1,dim(X)[1]))
     fit <- stats::glm.fit(design$X, design$y, family = stats::binomial())
-    coef[i,1:length(coefficients(fit))] <- stats::coefficients(fit)
+    if (nsub==1){
+      coef <- stats::coefficients(fit)
+    } else {
+      coef[i,1:length(coefficients(fit))] <- stats::coefficients(fit)
+    }
   }
   # sort row coefficients, intensity/column coefficients are set to mean over nsub (for loop)
   if (nsub > 1) {
