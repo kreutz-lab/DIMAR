@@ -26,7 +26,7 @@ dimar <- function(mtx, pattern = NULL, methods = 'fast', npat = NULL, group = 'c
   } else {
     file <- NULL
   }
-  if (class(mtx) == 'SingleCellExperiment' || class(mtx) == 'SummarizedExperiment') {
+  if (inherits(mtx,'SingleCellExperiment') || inherits(mtx,'SummarizedExperiment')) {
     mtx <- as.matrix(SummarizedExperiment::assay(mtx))
   }
   if (is.character(pattern)) {
