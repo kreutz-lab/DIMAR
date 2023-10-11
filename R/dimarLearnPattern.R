@@ -10,7 +10,7 @@
 #' mtx[sample(c(1:1000),100)] <- NA
 #' coef <- dimarLearnPattern(mtx)
 
-dimarLearnPattern <- function(mtx, orderRowCoef == T) {
+dimarLearnPattern <- function(mtx, orderRowCoef = T) {
   # Subsample indices
   if (nrow(mtx) > 500) {
     nsub <- ceiling(nrow(mtx) / 500)
