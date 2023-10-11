@@ -6,6 +6,8 @@
 #' @param coef Logistic regression coefficients of missing value pattern
 #' @param mtx Quantitative matrix
 #' @param npat Number of patterns
+#' @param dontAllowOnlyNA Default: TRUE ; Proteins with only NA will be assigned a random value. 
+#' If DIMAR is used to simulate by group, set this to FALSE. Proteins with only missing values in one of the groups are common and important for a realistic missing value pattern.
 #' @export dimarAssignPattern
 #' @examples
 #' mtx <- matrix(rnorm(1000),nrow=100)
@@ -14,7 +16,7 @@
 #' ref <- dimarConstructReferenceData(mtx)
 #' sim <- dimarAssignPattern(ref, coef, mtx)
 
-dimarAssignPattern <- function(ref, coef, mtx = NULL, npat = NULL) {
+dimarAssignPattern <- function(ref, coef, mtx = NULL, npat = NULL, dontAllowOnlyNA = TRUE) {
   if (is.null(npat)) {
     if (nrow(ref)*ncol(ref) < 50000) {
       npat <- 20
@@ -42,11 +44,13 @@ dimarAssignPattern <- function(ref, coef, mtx = NULL, npat = NULL) {
     # Assign NA to ref
     pat1 <- ref
     pat1[ind] <- NA
+    if(dontAllowOnlyNA){
     # if protein not measured at all, randomly assign one data point
-    if (any(rowSums(is.na(pat1)) == ncol(pat1))) {
-      allna <- which(rowSums(is.na(pat1)) == ncol(pat1))
-      allna <- cbind(allna,sample(1:ncol(pat1),length(allna),replace=TRUE))
-      pat1[allna] <- ref[allna]
+      if (any(rowSums(is.na(pat1)) == ncol(pat1))) {
+        allna <- which(rowSums(is.na(pat1)) == ncol(pat1))
+        allna <- cbind(allna,sample(1:ncol(pat1),length(allna),replace=TRUE))
+        pat1[allna] <- ref[allna]
+      }
     }
     pat[,,i] <- pat1
   }
