@@ -14,8 +14,8 @@
 
 dimarLearnPattern <- function(mtx, orderCoefByName = F, DESearchWord = NULL) {
   # Subsample indices
-  if (nrow(mtx) > 200) {
-    nsub <- ceiling(nrow(mtx) / 200)
+  if (nrow(mtx) > 500) {
+    nsub <- ceiling(nrow(mtx) / 500)
     indrand <- sample(1:nrow(mtx), nrow(mtx))
     npersub <- ceiling(nrow(mtx) / nsub)
     coef.lst <- list() #intialise as list in order to keep names of rows
