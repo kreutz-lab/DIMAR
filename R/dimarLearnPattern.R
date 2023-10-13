@@ -3,17 +3,19 @@
 #' @description Learns missing value occurence pattern from quantitative matrix by a logistic regression model
 #' @return Logistic regression coefficients describing missing value pattern
 #' @param mtx Quantitative matrix
-#' @param orderRowCoef default: TRUE. If order of rows does not want to be kept in simulation, set to FALSE.
+#' @param orderCoefByName default: FALSE. If coefficients should be ordered exactly as in input mtx set TRUE. Then, eg row 100 of a new matrix will 
+#' be simulated with the row coefficient of row 100 of the input matrix
+#' @param DESearchWord if groundtruth is known, and a particular string defines the groundtruth in the rownames of mtx, give this string.
 #' @export dimarLearnPattern
 #' @examples
 #' #' mtx <- matrix(rnorm(1000),nrow=100)
 #' mtx[sample(c(1:1000),100)] <- NA
 #' coef <- dimarLearnPattern(mtx)
 
-dimarLearnPattern <- function(mtx, orderRowCoef = T) {
+dimarLearnPattern <- function(mtx, orderCoefByName = F, DESearchWord = NULL) {
   # Subsample indices
-  if (nrow(mtx) > 500) {
-    nsub <- ceiling(nrow(mtx) / 500)
+  if (nrow(mtx) > 200) {
+    nsub <- ceiling(nrow(mtx) / 200)
     indrand <- sample(1:nrow(mtx), nrow(mtx))
     npersub <- ceiling(nrow(mtx) / nsub)
     coef.lst <- list() #intialise as list in order to keep names of rows
@@ -31,7 +33,7 @@ dimarLearnPattern <- function(mtx, orderRowCoef = T) {
         ind <- indrand[(npersub*(i - 1) + 1):(npersub*i)]
       }
     }
-    design <- dimarConstructDesignMatrix(mtx[ind,])
+    design <- dimarConstructDesignMatrix(mtx[ind,], ind, DESearchWord = DESearchWord, orderCoefByName = orderCoefByName)
     design <- dimarConstructRegularizationMatrix(design)
 
     #fit <- stats::glm.fit(X,y,family=stats::binomial(),weights=rep(1,dim(X)[1]))
@@ -52,8 +54,8 @@ dimarLearnPattern <- function(mtx, orderRowCoef = T) {
     rowCoef.Intercept <- apply(coef.mtx[,-idx],2,
                                function(x) as.numeric(x + unlist(coef.mtx[,1])))
     rowCoef <- colMeans(rowCoef.Intercept, na.rm=T)
-    if(orderRowCoef)
-      rowCoef <- reorderRowCoef(rowCoef,mtx)
+    
+    rowCoef <- reorderRowCoef(rowCoef,mtx, orderCoefByName = orderCoefByName)
     
     coef <- c(notRowCoef,rowCoef)
   }
@@ -62,14 +64,15 @@ dimarLearnPattern <- function(mtx, orderRowCoef = T) {
   return(coef)
 }
 
-reorderRowCoef <- function(rowCoef,mtx){
+reorderRowCoef <- function(rowCoef,mtx, orderCoefByName = F){
   rowGroupVector <- gsub(".*#", "", names(rowCoef))
   rowCoef_ordered <- c()
   for (g in unique(rowGroupVector)){
     rowCoef.group <- rowCoef[grep(paste0("#",g), names(rowCoef))]
     protNames.group <- gsub("#.*", "", names(rowCoef.group))
-    rowCoef_ordered.group <- rowCoef.group[order(match(protNames.group,rownames(mtx)))] #reorder row Coefficients so they resemble order in mtx
-    rowCoef_ordered <- c(rowCoef_ordered, rowCoef_ordered.group)
+    if(orderCoefByName)
+      rowCoef.group <- rowCoef.group[order(match(protNames.group,rownames(mtx)))] #reorder row Coefficients so they resemble order in mtx
+    rowCoef_ordered <- c(rowCoef_ordered, rowCoef.group)
   }
   return(rowCoef_ordered)
 }
