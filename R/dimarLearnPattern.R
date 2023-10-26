@@ -5,14 +5,14 @@
 #' @param mtx Quantitative matrix
 #' @param orderCoefByName default: FALSE. If coefficients should be ordered exactly as in input mtx set TRUE. Then, eg row 100 of a new matrix will 
 #' be simulated with the row coefficient of row 100 of the input matrix
-#' @param DESearchWord if groundtruth is known, and a particular string defines the groundtruth in the rownames of mtx, give this string.
+#' @param DE_idx if groundtruth is known, give the row index of differentially expressed proteins
 #' @export dimarLearnPattern
 #' @examples
 #' #' mtx <- matrix(rnorm(1000),nrow=100)
 #' mtx[sample(c(1:1000),100)] <- NA
 #' coef <- dimarLearnPattern(mtx)
 
-dimarLearnPattern <- function(mtx, orderCoefByName = F, DESearchWord = NULL) {
+dimarLearnPattern <- function(mtx, orderCoefByName = F, DE_idx = NULL) {
   # Subsample indices
   if (nrow(mtx) > 500) {
     nsub <- ceiling(nrow(mtx) / 500)
@@ -33,7 +33,7 @@ dimarLearnPattern <- function(mtx, orderCoefByName = F, DESearchWord = NULL) {
         ind <- indrand[(npersub*(i - 1) + 1):(npersub*i)]
       }
     }
-    design <- dimarConstructDesignMatrix(mtx[ind,], ind, DESearchWord = DESearchWord, orderCoefByName = orderCoefByName)
+    design <- dimarConstructDesignMatrix(mtx[ind,], ind, DE_idx = DE_idx, orderCoefByName = orderCoefByName)
     design <- dimarConstructRegularizationMatrix(design)
 
     #fit <- stats::glm.fit(X,y,family=stats::binomial(),weights=rep(1,dim(X)[1]))

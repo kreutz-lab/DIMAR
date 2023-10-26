@@ -4,8 +4,11 @@
 #' @return list of response vector, design matrix and vector of predictor type
 #' @param mtx Quantitative matrix
 #' @param ind indices of rowSubset
-#' @param group a vector describing the assigment of each sample (column) of mtx to a group. By default mtx is split into two equally large groups
+#' @param group a vector describing the assigment of each sample (column) of mtx to a group. By default mtx is split into two equally large groups.
+#' Missing Value Patterns may contain group information that are relevant if imputation is performed and are only kept if group specific row coefficients are used.
 #' @param rowCoefByGroup by default TRUE. Thereby row coefficients are estimated for each group seperatly.
+#' @param orderCoefByName Keep names of original input matrix in estimated coefficients
+#' @param DE_idx If groundtruth is known, give this parameter to ensure DE proteins from input also receive row coefficients of DE proteins
 #' @export dimarConstructDesignMatrix
 #' @examples
 #' mtx <- matrix(rnorm(1000),nrow=100)
@@ -20,10 +23,7 @@
 #' fit <- glm.fit(design$X, design$y, family=binomial())
 #' yhat <- exp(design$X %*% coefficients(fit))/(1+exp(design$X %*% coefficients(fit)))
 
-dimarConstructDesignMatrix <- function(mtx, ind = 1:nrow(mtx), group = rep(c(1,2), each = ncol(mtx)/2), rowCoefByGroup = T, orderCoefByName = F, DESearchWord = NULL) {
-  message("dimarConstructDesignMatrix by default generates row Coefficients for each group. By Default it is assumed the data contains two equally sizes groups, 
-          with the first half of columns refering to samples of the first group. A costom vector can be passed to the function if another group design is needed.
-          Missing Value Patterns may contain group information that are relevant if imputation is performed and are only kept if group specific row coefficients are used.")
+dimarConstructDesignMatrix <- function(mtx, ind = 1:nrow(mtx), group = rep(c(1,2), each = ncol(mtx)/2), rowCoefByGroup = T, orderCoefByName = F, DE_idx = NULL) {
   X <- matrix(0L, nrow = nrow(mtx)*ncol(mtx), ncol = nrow(mtx)*length(unique(group)) + ncol(mtx) + 2)
   # Intercept
   X[,1] <- rep(1, nrow(mtx)*ncol(mtx))
@@ -41,9 +41,6 @@ dimarConstructDesignMatrix <- function(mtx, ind = 1:nrow(mtx), group = rep(c(1,2
   rowIDs <- paste0("row",ind)
   colIDs <- paste0("col",1:ncol(mtx))
   #make rowIDs. If groundtruth is known, information about grundtruth of a protein can be stored in it's row coefficient name
-  DE_idx <- NULL
-  if(length(DESearchWord) > 0)
-    DE_idx <- grep(DESearchWord,rownames(mtx))
   rowIDs[DE_idx] <- paste0(rowIDs[DE_idx],"_DE")
   
   #if you want to use the original names from mtx to keep the exact order
