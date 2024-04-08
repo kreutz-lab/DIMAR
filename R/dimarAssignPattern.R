@@ -16,7 +16,13 @@
 #' ref <- dimarConstructReferenceData(mtx)
 #' sim <- dimarAssignPattern(ref, coef, mtx)
 
-dimarAssignPattern <- function(ref, coef, mtx = NULL, npat = NULL, dontAllowOnlyNA = TRUE) {
+dimarAssignPattern <- function(ref, coef, mtx = NULL, npat = NULL, dontAllowOnlyNA = TRUE, seed = NULL, groupDesign = rep(c(1,2), each = ncol(ref)/2)) {
+  
+  #if a seed is given, draw from coefs the same way as coefficients from potential previous linear model intensity simulation (lmInt-Sim) were drawn. 
+  #In order to conserve missing value pattern it is necessary to ensure features are simulated with intensity and missing value coefficients estimated from the same feature in the input.
+  if (!is.null(seed))
+    coef <- drawCoefWithSeed(ref = ref, coef = coef, seed = seed, groupDesign = groupDesign)
+  
   if (is.null(npat)) {
     if (nrow(ref)*ncol(ref) < 50000) {
       npat <- 20
@@ -56,4 +62,34 @@ dimarAssignPattern <- function(ref, coef, mtx = NULL, npat = NULL, dontAllowOnly
   }
   print(paste(npat,'patterns of MVs are assigned.'))
   return(pat)
-}
+  
+  #The Idea for this function is to ensure that the missing values and the intensity value of a certain feature are simulated with a coefficients estimated from the same feature of the input matrix. 
+  #It draws the coefficients estimated from the Logistic Regression within DIMAR with the same seed as the coefficients estimated for the Linear Model were previously drawn with.
+  drawCoefWithSeed <- function(ref, coef, seed = NULL, groupDesign){  
+    DE_idx <- grep("DE",rownames(ref))
+    colCoef <- coef[grep("col",names(coef))]
+    DECoef <- coef[grep("DE",names(coef))]
+    rowCoef <- coef[grep("row", names(coef))]
+    rowCoef <- rowCoef[!grepl("DE",names(rowCoef))] #exclude rows that are differentially expressed, as values for DE proteins are drawn separately
+    set.seed(seed)
+    newColCoef <- sample(colCoef, ncol(ref), replace = T) #draw column coefficients for each column present in ref
+    allRowCoef <- c()
+    for(g in unique(groupDesign)){
+      DECoef_group <- DECoef[grep(paste0("#",g), names(DECoef))]
+      rowCoef_group <- rowCoef[grep(paste0("#",g),names(rowCoef))]
+      set.seed(seed)
+      drawn_rowCoef_group <- sample(rowCoef_group, nrow(ref), replace = T) #first draw for each feature a coefficient from not DE features
+      names(drawn_rowCoef_group) <- sub("#[0-9]","",names(drawn_rowCoef_group)) #remove group assignment
+      set.seed(seed)
+      drawn_rowCoef_group[DE_idx] <- sample(DECoef_group, length(DE_idx), replace = T) #replace coefficients for DE features with coefficients estimated from DE features
+      names(drawn_rowCoef_group)[DE_idx] <- paste0(names(drawn_rowCoef_group[DE_idx]), "_DE") #add DE label to name
+      names(drawn_rowCoef_group) <- paste0(names(drawn_rowCoef_group),"#",g) #reintroduce group label
+      drawn_rowCoef_group
+      allRowCoef <- c(allRowCoef, drawn_rowCoef_group)
+    }
+    newCoef <- c(coef[1:2],newColCoef,allRowCoef)
+    
+    return(newCoef)
+  }
+  }  
+
