@@ -41,8 +41,10 @@ dimarConstructDesignMatrix <- function(mtx, ind = 1:nrow(mtx), group = rep(c(1,2
   rowIDs <- paste0("row",ind)
   colIDs <- paste0("col",1:ncol(mtx))
   #make rowIDs. If groundtruth is known, information about grundtruth of a protein can be stored in it's row coefficient name
-  rowIDs[DE_idx] <- paste0(rowIDs[DE_idx],"_DE")
-  
+  if(!is.null(DE_idx)){
+    DE_idx_chunk <- which(ind %in% DE_idx)
+    rowIDs[DE_idx_chunk] <- paste0(rowIDs[DE_idx_chunk],"_DE")
+  }
   #if you want to use the original names from mtx to keep the exact order
   if(orderCoefByName){
     rowIDs <- rownames(mtx)
