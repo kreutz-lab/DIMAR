@@ -24,6 +24,8 @@
 #' yhat <- exp(design$X %*% coefficients(fit))/(1+exp(design$X %*% coefficients(fit)))
 
 dimarConstructDesignMatrix <- function(mtx, ind = 1:nrow(mtx), group = rep(c(1,2), each = ncol(mtx)/2), rowCoefByGroup = T, orderCoefByName = F, DE_idx = NULL) {
+  message("By default DIMAR is assuming that the first half of the columns belong to group 1 and the second half to group 2.
+          If this is not the case, please provide the group vector to the dimarConstructDesignMatrix function.")
   X <- matrix(0L, nrow = nrow(mtx)*ncol(mtx), ncol = nrow(mtx)*length(unique(group)) + ncol(mtx) + 2)
   # Intercept
   X[,1] <- rep(1, nrow(mtx)*ncol(mtx))
@@ -31,13 +33,13 @@ dimarConstructDesignMatrix <- function(mtx, ind = 1:nrow(mtx), group = rep(c(1,2
   Xtype <- 0
   # Mean intensity
   X[,2] <- scale(rep(rowMeans(mtx, na.rm = TRUE), ncol(mtx)))
-  X[which(is.na(X[,2])),2]  <- min(X[,2], na.rm=T) ##needed if fitted by group. Some proteins have no values in one group but are to be kept. 
+  X[which(is.na(X[,2])),2]  <- min(X[,2], na.rm=T) ##needed if fitted by group. Some proteins have no values in one group but are to be kept.
   Xname[2] <- 'mean'
   Xtype[2] <- 1
   #Assign row coefficients for each group. Only then group differences in the missing value pattern can be reflected in the coefficients
   if(rowCoefByGroup == F)
     group <- rep(1,ncol(mtx))
-  
+
   rowIDs <- paste0("row",ind)
   colIDs <- paste0("col",1:ncol(mtx))
   #make rowIDs. If groundtruth is known, information about grundtruth of a protein can be stored in it's row coefficient name
@@ -52,7 +54,7 @@ dimarConstructDesignMatrix <- function(mtx, ind = 1:nrow(mtx), group = rep(c(1,2
   }
   row <- paste0(rep(rowIDs, ncol(mtx)), "#",rep(unique(group), each = ncol(mtx)/length(unique(group))*nrow(mtx)))
   col <- rep(colIDs, each = nrow(mtx))
-  
+
   for (i_col in 1:ncol(mtx)) {
     colID <- unique(col)[i_col]
     X[col == colID, i_col + 2] <- 1
@@ -61,12 +63,12 @@ dimarConstructDesignMatrix <- function(mtx, ind = 1:nrow(mtx), group = rep(c(1,2
   }
   for (i_row in 1:(nrow(mtx)*length(unique(group)))) {
     rowID <- unique(row)[i_row]
-    X[row == rowID, i_row + 2 + ncol(mtx)] <- 1  
-    Xname <- c(Xname, rowID)  
-    Xtype <- c(Xtype, 3)  
+    X[row == rowID, i_row + 2 + ncol(mtx)] <- 1
+    Xname <- c(Xname, rowID)
+    Xtype <- c(Xtype, 3)
   }
   colnames(X) <- Xname
-  
+
   y <- as.numeric(is.na(mtx))
   #return(list(y,X,Xtype))
   design <- list(y, X,Xtype)

@@ -3,7 +3,7 @@
 #' @description Learns missing value occurence pattern from quantitative matrix by a logistic regression model
 #' @return Logistic regression coefficients describing missing value pattern
 #' @param mtx Quantitative matrix
-#' @param orderCoefByName default: FALSE. If coefficients should be ordered exactly as in input mtx set TRUE. Then, eg row 100 of a new matrix will 
+#' @param orderCoefByName default: FALSE. If coefficients should be ordered exactly as in input mtx set TRUE. Then, eg row 100 of a new matrix will
 #' be simulated with the row coefficient of row 100 of the input matrix
 #' @param DE_idx if groundtruth is known, give the row index of differentially expressed proteins
 #' @export dimarLearnPattern
@@ -54,12 +54,13 @@ dimarLearnPattern <- function(mtx, orderCoefByName = F, DE_idx = NULL) {
     rowCoef.Intercept <- apply(coef.mtx[,-idx],2,
                                function(x) as.numeric(x + unlist(coef.mtx[,1])))
     rowCoef <- colMeans(rowCoef.Intercept, na.rm=T)
-    
+
     rowCoef <- reorderRowCoef(rowCoef,mtx, orderCoefByName = orderCoefByName)
-    
+
     coef <- c(notRowCoef,rowCoef)
   }
-
+  attr(coef, "xtype") <- design$Xtype
+  attr(coef, "DE_idx") <- DE_idx
   print('Pattern of MVs is learned by logistic regression.')
   return(coef)
 }
