@@ -6,7 +6,7 @@
 #' @param coef Logistic regression coefficients of missing value pattern
 #' @param mtx Quantitative matrix
 #' @param npat Number of patterns
-#' @param dontAllowOnlyNA Default: TRUE ; Proteins with only NA will be assigned a random value. 
+#' @param dontAllowOnlyNA Default: TRUE ; Proteins with only NA will be assigned a random value.
 #' If DIMAR is used to simulate by group, set this to FALSE. Proteins with only missing values in one of the groups are common and important for a realistic missing value pattern.
 #' @export dimarAssignPattern
 #' @examples
@@ -17,7 +17,7 @@
 #' sim <- dimarAssignPattern(ref, coef, mtx)
 
 dimarAssignPattern <- function(ref, coef, mtx = NULL, npat = NULL, dontAllowOnlyNA = TRUE) {
-  
+
   if (is.null(npat)) {
     if (nrow(ref)*ncol(ref) < 50000) {
       npat <- 20
@@ -55,9 +55,9 @@ dimarAssignPattern <- function(ref, coef, mtx = NULL, npat = NULL, dontAllowOnly
     }
     pat[,,i] <- pat1
   }
-  print(paste(npat,'patterns of MVs are assigned.'))
+  message(paste(npat,'patterns of MVs are assigned.'))
   return(pat)
-  
-  
-  }  
+
+
+  }
 
