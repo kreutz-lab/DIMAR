@@ -37,7 +37,7 @@ dimarLearnPattern <- function(mtx, orderCoefByName = F, DE_idx = NULL) {
     design <- dimarConstructRegularizationMatrix(design)
 
     #fit <- stats::glm.fit(X,y,family=stats::binomial(),weights=rep(1,dim(X)[1]))
-    fit <- stats::glm.fit(design$X, design$y, family = stats::binomial())
+    fit <- speedglm::speedglm(design$X, design$y, family = stats::binomial())
     if (nsub==1){
       coef <- stats::coefficients(fit)
     } else {
