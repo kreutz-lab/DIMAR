@@ -47,7 +47,7 @@ dimarEvaluatePerformance <- function(Imputations, ref, sim, rankby = 'RMSE',
         htest = stats::t.test(ref[t, group == 1], ref[t, group == 2])
         ttest[t] <- htest$statistic
       }
-      ttest[!is.finite(ttest)] <- NULL
+      ttest[!is.finite(ttest)] <- NA
     }
     for (a in 1:length(Imputations)) { # loop over imputation algorithms
       im <- Imputations[[a]][, , p]
@@ -65,7 +65,7 @@ dimarEvaluatePerformance <- function(Imputations, ref, sim, rankby = 'RMSE',
               htesti <- stats::t.test(im[t,group == 1], im[t,group == 2])
               ttesti[t] <- htesti$statistic
             }
-            ttesti[!is.finite(ttesti)] <- NULL
+            ttesti[!is.finite(ttesti)] <- NA
             RMSEt[p,a] <- sqrt(sum((ttest - ttesti)^2, na.rm = TRUE) / max(length(ttest), length(ttesti)))
           }
       }
