@@ -49,6 +49,10 @@ dimarConstructDesignMatrix <- function(mtx, ind = 1:nrow(mtx), group = rep(c(1,2
   }
   #if you want to use the original names from mtx to keep the exact order
   if(orderCoefByName){
+    if(is.null(rownames(mtx)))
+      stop("The input matrix has no rownames. Please provide rownames to keep the order of the coefficients."))
+    if(is.null(colnames(mtx)))
+      stop("The input matrix has no colnames. Please provide colnames to keep the order of the coefficients.")
     rowIDs <- rownames(mtx)
     colIDs <- colnames(mtx)
   }
