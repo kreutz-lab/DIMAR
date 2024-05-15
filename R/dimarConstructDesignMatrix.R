@@ -4,7 +4,8 @@
 #' @return list of response vector, design matrix and vector of predictor type
 #' @param mtx Quantitative matrix
 #' @param ind indices of rowSubset
-#' @param group a vector describing the assigment of each sample (column) of mtx to a group. By default mtx is split into two equally large groups.
+#' @param group a vector describing the assigment of each sample (column) of mtx to a group. 
+#' By default mtx is calculated using hierarchical clustering.
 #' Missing Value Patterns may contain group information that are relevant if imputation is performed and are only kept if group specific row coefficients are used.
 #' @param rowCoefByGroup by default TRUE. Thereby row coefficients are estimated for each group seperatly.
 #' @param orderCoefByName Keep names of original input matrix in estimated coefficients
@@ -23,9 +24,19 @@
 #' fit <- glm.fit(design$X, design$y, family=binomial())
 #' yhat <- exp(design$X %*% coefficients(fit))/(1+exp(design$X %*% coefficients(fit)))
 
-dimarConstructDesignMatrix <- function(mtx, ind = 1:nrow(mtx), group = rep(c(1,2), each = ncol(mtx)/2), rowCoefByGroup = T, orderCoefByName = F, DE_idx = NULL) {
-  message("By default DIMAR is assuming that the first half of the columns belong to group 1 and the second half to group 2.
-          If this is not the case, please provide the group vector to the dimarConstructDesignMatrix function.")
+dimarConstructDesignMatrix <- function(mtx, ind = 1:nrow(mtx), 
+                                       group =  'cluster', 
+                                       rowCoefByGroup = T, 
+                                       orderCoefByName = F, 
+                                       DE_idx = NULL) {
+  if (group[1] == 'cluster' | is.null(group)) {
+    message("By default DIMAR is using hierarchical clustering (amap::hcluster())
+            to assign samples to two groups. If group assigments are known,
+            provide a vector of group assigments to be passed to the 
+            dimarConstructDesignMatrix function.")
+    h <- amap::hcluster(t(ref))
+    group <- stats::cutree(h, k = 2)
+  }
   X <- matrix(0L, nrow = nrow(mtx)*ncol(mtx), ncol = nrow(mtx)*length(unique(group)) + ncol(mtx) + 2)
   # Intercept
   X[,1] <- rep(1, nrow(mtx)*ncol(mtx))
@@ -49,7 +60,15 @@ dimarConstructDesignMatrix <- function(mtx, ind = 1:nrow(mtx), group = rep(c(1,2
   }
   #if you want to use the original names from mtx to keep the exact order
   if(orderCoefByName){
+    if(is.null(rownames(mtx)))
+      stop("The input matrix has no rownames.
+      Please provide rownames to keep the order of the coefficients,
+           or set orderCoefByName to FALSE.")
     rowIDs <- rownames(mtx)
+    if(is.null(colnames(mtx)))
+       stop("The input matrix has no colnames.
+      Please provide rownames to keep the order of the coefficients,
+           or set orderCoefByName to FALSE.")
     colIDs <- colnames(mtx)
   }
   row <- paste0(rep(rowIDs, ncol(mtx)), "#",rep(unique(group), each = ncol(mtx)/length(unique(group))*nrow(mtx)))

@@ -3,6 +3,8 @@
 #' @description Learns missing value occurence pattern from quantitative matrix by a logistic regression model
 #' @return Logistic regression coefficients describing missing value pattern
 #' @param mtx Quantitative matrix
+#' @param group a vector describing the assigment of each sample (column) of mtx to a group.
+#' if not known, group is calculated using hierarchical clustering
 #' @param orderCoefByName default: FALSE. If coefficients should be ordered exactly as in input mtx set TRUE. Then, eg row 100 of a new matrix will
 #' be simulated with the row coefficient of row 100 of the input matrix
 #' @param DE_idx if groundtruth is known, give the row index of differentially expressed proteins
@@ -12,7 +14,7 @@
 #' mtx[sample(c(1:1000),100)] <- NA
 #' coef <- dimarLearnPattern(mtx)
 
-dimarLearnPattern <- function(mtx, orderCoefByName = F, DE_idx = NULL) {
+dimarLearnPattern <- function(mtx, group = NULL,orderCoefByName = F, DE_idx = NULL) {
   # Subsample indices
   if (nrow(mtx) > 500) {
     nsub <- ceiling(nrow(mtx) / 500)
@@ -33,7 +35,7 @@ dimarLearnPattern <- function(mtx, orderCoefByName = F, DE_idx = NULL) {
         ind <- indrand[(npersub*(i - 1) + 1):(npersub*i)]
       }
     }
-    design <- dimarConstructDesignMatrix(mtx[ind,], ind, DE_idx = DE_idx, orderCoefByName = orderCoefByName)
+    design <- dimarConstructDesignMatrix(mtx[ind,], ind, group = group, DE_idx = DE_idx, orderCoefByName = orderCoefByName)
     design <- dimarConstructRegularizationMatrix(design)
 
     #fit <- stats::glm.fit(X,y,family=stats::binomial(),weights=rep(1,dim(X)[1]))
