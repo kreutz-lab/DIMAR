@@ -7,19 +7,9 @@ For further inforamtion refer to the publication [Egert et al. (2021)](https://p
 
 For installation of DIMAR run:
 ```
-install.packages("https://cran.r-project.org/src/contrib/Archive/imputation/imputation_1.3.tar.gz", repos=NULL, type='source')
-
-devtools::install_github("cran/DMwR")
-
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-
-BiocManager::install(pkgs = c("pcaMethods", "impute", "SummarizedExperiment"))
-
-install.packages("devtools")
-devtools::install_github("kreutz-lab/DIMAR")
+library(remotes, quietly = T)
+remotes::install_github("kreutz-lab/DIMAR")
 ```
-
 
 # Examples
 
