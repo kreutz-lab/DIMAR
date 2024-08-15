@@ -14,7 +14,7 @@
 #' mtx[sample(c(1:1000),100)] <- NA
 #' coef <- dimarLearnPattern(mtx)
 
-dimarLearnPattern <- function(mtx, group = NULL,orderCoefByName = F, DE_idx = NULL) {
+dimarLearnPattern <- function(mtx, group = NULL,orderCoefByName = F, rowCoefByGroup = T, DE_idx = NULL) {
   # Subsample indices
   if (nrow(mtx) > 500) {
     nsub <- ceiling(nrow(mtx) / 500)
@@ -35,7 +35,11 @@ dimarLearnPattern <- function(mtx, group = NULL,orderCoefByName = F, DE_idx = NU
         ind <- indrand[(npersub*(i - 1) + 1):(npersub*i)]
       }
     }
-    design <- dimarConstructDesignMatrix(mtx[ind,], ind, group = group, DE_idx = DE_idx, orderCoefByName = orderCoefByName)
+    design <- dimarConstructDesignMatrix(mtx[ind,], ind, 
+                                         group = group, 
+                                         rowCoefByGroup = rowCoefByGroup,
+                                         DE_idx = DE_idx, 
+                                         orderCoefByName = orderCoefByName)
     design <- dimarConstructRegularizationMatrix(design)
 
     #fit <- stats::glm.fit(X,y,family=stats::binomial(),weights=rep(1,dim(X)[1]))

@@ -29,14 +29,23 @@ dimarConstructDesignMatrix <- function(mtx, ind = 1:nrow(mtx),
                                        rowCoefByGroup = T, 
                                        orderCoefByName = F, 
                                        DE_idx = NULL) {
-  if (group[1] == 'cluster' | is.null(group)) {
+  if(rowCoefByGroup ==T){
+  if(is.null(group))
+    group <- 'cluster'
+  if (group[1] == 'cluster') {
     message("By default DIMAR is using hierarchical clustering (amap::hcluster())
             to assign samples to two groups. If group assigments are known,
             provide a vector of group assigments to be passed to the 
             dimarConstructDesignMatrix function.")
-    h <- amap::hcluster(t(ref))
+    h <- amap::hcluster(t(mtx))
     group <- stats::cutree(h, k = 2)
   }
+  }else{ 
+    message("Row coefficients are estimated for all groups together. 
+            This may result in averaging out the amount of missing values over all groups.
+            If you want to estimate row coefficients for each group seperatly, set rowCoefByGroup to TRUE.")
+    group <- rep(1,ncol(mtx))}
+  
   X <- matrix(0L, nrow = nrow(mtx)*ncol(mtx), ncol = nrow(mtx)*length(unique(group)) + ncol(mtx) + 2)
   # Intercept
   X[,1] <- rep(1, nrow(mtx)*ncol(mtx))
@@ -48,8 +57,7 @@ dimarConstructDesignMatrix <- function(mtx, ind = 1:nrow(mtx),
   Xname[2] <- 'mean'
   Xtype[2] <- 1
   #Assign row coefficients for each group. Only then group differences in the missing value pattern can be reflected in the coefficients
-  if(rowCoefByGroup == F)
-    group <- rep(1,ncol(mtx))
+  
 
   rowIDs <- paste0("row",ind)
   colIDs <- paste0("col",1:ncol(mtx))
